@@ -1,0 +1,24 @@
+{
+  "name": "cafemaps",
+  "version": "1.0.0",
+  "description": "Cafe Maps",
+  "main": "index.js",
+  "dependencies": {
+    "apollo-server-express": "^2.9.14",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatthewWC/cafemaps.git"
+  },
+  "author": "Matthew Cook",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatthewWC/cafemaps/issues"
+  },
+  "homepage": "https://github.com/MatthewWC/cafemaps#readme"
+}
