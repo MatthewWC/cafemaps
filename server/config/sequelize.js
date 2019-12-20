@@ -33,7 +33,6 @@ const directory = join(__dirname, '../models')
   if (a.order > b.order) return 1
 })
 .forEach(model => {
-  console.log(model)
   if ('associate' in model) model.associate(models)
 })
 
