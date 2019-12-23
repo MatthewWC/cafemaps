@@ -1,26 +1,24 @@
 require('dotenv').config()
-const express = require('express')
-const app = express()
-const { ApolloServer} = require('apollo-server-express')
+const { ApolloServer } = require('apollo-server-express')
 const resolvers = require('./resolvers')
 const typeDefs = require('./config/typeDefs')
 const jwt = require('jsonwebtoken')
 const { models, connection } = require('./config/sequelize')
+const express = require('express')
+
+const app = express()
 
 connection.sync()
 
 const getUser = token => {
   try {
     if (token) {
-      return jwt.verify(token, process.env.TOKEN)
+      return jwt.verify(token, process.env.JWT_TOKEN_USER_SECRET)
     }
-    return null
   } catch (err) {
-    return null
+    return err
   }
 }
-
-app.get('/', (req, res) => res.send('INDEX'))
 
 const server = new ApolloServer({ 
   typeDefs, 
@@ -39,6 +37,8 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app })
 
-app.listen({ port: 4000 }, () => {
+app.listen({ 
+  host: 'localhost',
+  port: 4000 }, () => {
   console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
 })
