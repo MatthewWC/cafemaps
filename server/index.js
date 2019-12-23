@@ -15,8 +15,9 @@ const getUser = token => {
     if (token) {
       return jwt.verify(token, process.env.JWT_TOKEN_USER_SECRET)
     }
+    return null
   } catch (err) {
-    return err
+    return null
   }
 }
 
