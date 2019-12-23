@@ -2,8 +2,10 @@ const { gql } = require('apollo-server-express')
 
 module.exports = gql`
   type User {
-    id: String,
-    username: String
+    firstName: String!,
+    lastName: String,
+    password: String!,
+    email: String!
   }
 
   type Company {
@@ -17,13 +19,48 @@ module.exports = gql`
   }
     
   type Query {
-    getUser(username: String): User!
+    getUsers(firstName: String): [User!]
+    getUser(email: String): User!
     getCompany(companyName: String): Company!
     getStore(storeName: String): Store!
   }
     
   type Mutation {
-    createUser(firstName: String, lastName: String): User!
-    createCompany(companyName: String): Company!
-    createStore(storeName: String): Store!
+    register(
+      firstName: String!,
+      lastName: String, 
+      password: String!, 
+      email: String!
+    ): User!
+
+    login(
+      email: String!,
+      password: String!
+    ): LoginResponse!
+
+    createCompany(
+      companyName: String
+    ): Company!
+
+    createStore(
+      storeName: String
+    ): Store!
+
+    updateUser(
+      firstName: String, 
+      lastName: String, 
+      password: String,
+      changePassword: String,
+      email: String
+    ): User!
+
+    deleteUser(
+      email: String!,
+      password: String!
+    ): User!
+  }
+  
+  type LoginResponse {
+    token: String
+    user: User
   }`
