@@ -77,33 +77,21 @@ module.exports = {
       return { token, user }
     },
     updateUser: async (_, args, context, info) => {
+      console.log(context.user)
       let user
       let newPassword
-      // check login status
-      if(!context.user.email){
-          throw new AuthenticationError('Please login first.')
-      }
       // get user
       try{
         user = await context.models.User.findOne({
           where: { email: context.user.email }
         })
       } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
+        throw new AuthenticationError('Please login first.')
       }
       // check password update
-      if(args.changePassword){
+      if(args.password){
         try{
-          await comparePassword(args.password, user.dataValues.passwordHash)
-          newPassword = await hashPassword(args.newPassword)
-        } catch (err) {
-          throw new AuthenticationError('Invalid password')
-        }
-      }
-      // check email update
-      if(args.email){
-        try{
-          await comparePassword(args.password, user.dataValues.passwordHash)
+          newPassword = await hashPassword(args.password)
         } catch (err) {
           throw new AuthenticationError('Invalid password')
         }
@@ -122,13 +110,33 @@ module.exports = {
       return user
     },
     deleteUser: async (_, args, context, info) => {
-      // verify password
+      let user
       // get user
+      try{
+        user = await context.models.User.findOne({
+          where: {
+            email: context.user.email
+          }
+        })
+      } catch (err) {
+        throw new AuthenticationError('Please login first.')
+      }
+      //check password
+      try{
+        await comparePassword(args.password, user.dataValues.passwordHash)
+      } catch (err) {
+        throw new AuthenticationError('Invalid password')
+      }
       // delete user
       try{
+        await user.destroy({
+          force: true
+        })
+        console.log(user.token)
       } catch (err) {
-        throw new AuthenticationError('')
+        throw new AuthenticationError('Something bad happened. Contact support.')
       }
+      return user
     }
   }
 }
