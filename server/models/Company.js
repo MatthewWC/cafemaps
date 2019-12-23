@@ -1,6 +1,44 @@
 module.exports = (sequelize, DataTypes) => {
   const Company = sequelize.define('Company', {
-    companyName: DataTypes.STRING
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: () => uuid()
+    },
+    companyName: {
+      allowNull: false,
+      unique: true,
+      type: DataTypes.STRING
+    },
+    email: {
+      allowNull: false,
+      unique: true,
+      type: DataTypes.STRING
+    },
+    addressOne: {
+      type: DataTypes.STRING
+    },
+    addressTwo: {
+      type: DataTypes.STRING
+    },
+    city: {
+      type: DataTypes.STRING
+    },
+    state: {
+      type: DataTypes.STRING
+    },
+    zipcode: {
+      type: DataTypes.INTEGER
+    },
+    phoneNumber: {
+      unique: true,
+      type: DataTypes.INTEGER
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date()
+    }
   })
 
   Company.associate = (models) => {
