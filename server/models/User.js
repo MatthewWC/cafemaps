@@ -1,5 +1,5 @@
-const uuid = require('uuidv4')
-
+const { uuid } = require('uuidv4')
+//TODO: should user have a role on data model
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
@@ -12,11 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     lastName: {
-      type: DataTypes.STRING
-    },
-    username: {
-      allowNull: false,
-      unique: true,
       type: DataTypes.STRING
     },
     passwordHash: {
@@ -32,12 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: new Date()
     }
   })
-
-  User.associate = (models) => {
-    User.hasMany(models.Company, {
-      foreignKey: 'userId'
-    })
-  }
 
   User.order = 2
 
