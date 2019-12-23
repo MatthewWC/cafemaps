@@ -50,14 +50,10 @@ module.exports = gql`
       firstName: String, 
       lastName: String, 
       password: String,
-      changePassword: String,
       email: String
     ): User!
 
-    deleteUser(
-      email: String!,
-      password: String!
-    ): User!
+    deleteUser(password: String!): User
   }
   
   type LoginResponse {
