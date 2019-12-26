@@ -21,14 +21,27 @@ module.exports = gql`
 
   type Store {
     id: String,
-    storeName: String
+    companyId: String!,
+    storeName: String!,
+    email: String!,
+    addressOne: String!,
+    addressTwo: String,
+    city: String!,
+    state: String!,
+    zipcode: Float!,
+    wifi: Boolean!,
+    bakery: Boolean!,
+    milkAlt: Boolean!,
+    indoorSeating: Boolean!,
+    driveThru: Boolean!,
+    clubCard: Boolean!
   }
     
   type Query {
-    getUsers(firstName: String): [User!]
     getUser(email: String): User!
+    getUsers(firstName: String): [User!]
     getCompany(companyName: String, id: String): Company!
-    getStore(storeName: String): Store!
+    getStore(id: String!): Store!
   }
     
   type Mutation {
@@ -55,7 +68,7 @@ module.exports = gql`
 
     createCompany(
       companyName: String!,
-      email: String!,
+      email: String,
       addressOne: String,
       addressTwo: String,
       city: String,
@@ -79,9 +92,43 @@ module.exports = gql`
 
     createStore(
       companyName: String!,
-      storeName: String!
-    ): Store
+      email: String!,
+      storeName: String!,
+      addressOne: String!,
+      addressTwo: String,
+      city: String!,
+      state: String!,
+      zipcode: String!,
+      rating: Float,
+      wifi: Boolean,
+      bakery: Boolean,
+      milkAlt: Boolean,
+      indoorSeating: Boolean,
+      driveThru: Boolean,
+      clubCard: Boolean
+    ): Store!
+    
+    updateStore(
+      id: String!,
+      storeName: String,
+      email: String,
+      addressOne: String,
+      addressTwo: String,
+      city: String,
+      state: String,
+      zipcode: String,
+      rating: Float,
+      wifi: Boolean,
+      bakery: Boolean,
+      milkAlt: Boolean,
+      indoorSeating: Boolean,
+      driveThru: Boolean,
+      clubCard: Boolean
+    ): Store!
 
+    deleteStore(
+      id: String!,
+    ): Store
   }
   
   type LoginResponse {
