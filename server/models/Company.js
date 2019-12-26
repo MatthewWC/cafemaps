@@ -1,3 +1,5 @@
+const { uuid } = require('uuidv4')
+
 module.exports = (sequelize, DataTypes) => {
   const Company = sequelize.define('Company', {
     id: {
@@ -29,13 +31,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     zipcode: {
-      type: DataTypes.INTEGER
-    },
-    phoneNumber: {
-      unique: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING(5)
     },
     createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date()
+    },
+    updatedAt: {
       type: DataTypes.DATE,
       defaultValue: new Date()
     }
