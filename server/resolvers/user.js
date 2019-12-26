@@ -137,7 +137,6 @@ module.exports = {
         await user.destroy({
           force: true
         })
-        console.log(user.token)
       } catch (err) {
         throw new AuthenticationError('Something bad happened. Contact support.')
       }
