@@ -10,7 +10,13 @@ module.exports = gql`
 
   type Company {
     id: String,
-    companyName: String
+    companyName: String!,
+    email: String!,
+    addressOne: String,
+    addressTwo: String,
+    city: String,
+    state: String,
+    zipcode: String,
   }
 
   type Store {
@@ -21,7 +27,7 @@ module.exports = gql`
   type Query {
     getUsers(firstName: String): [User!]
     getUser(email: String): User!
-    getCompany(companyName: String): Company!
+    getCompany(companyName: String, id: String): Company!
     getStore(storeName: String): Store!
   }
     
@@ -38,14 +44,6 @@ module.exports = gql`
       password: String!
     ): LoginResponse!
 
-    createCompany(
-      companyName: String
-    ): Company!
-
-    createStore(
-      storeName: String
-    ): Store!
-
     updateUser(
       firstName: String, 
       lastName: String, 
@@ -54,6 +52,36 @@ module.exports = gql`
     ): User!
 
     deleteUser(password: String!): User
+
+    createCompany(
+      companyName: String!,
+      email: String!,
+      addressOne: String,
+      addressTwo: String,
+      city: String,
+      state: String,
+      zipcode: String
+    ): Company!
+
+    updateCompany(
+      companyName: String!,
+      email: String,
+      addressOne: String,
+      addressTwo: String,
+      city: String,
+      state: String,
+      zipcode: String
+    ): Company!
+
+    deleteCompany(
+      companyName: String!
+    ): Company
+
+    createStore(
+      companyName: String!,
+      storeName: String!
+    ): Store
+
   }
   
   type LoginResponse {
