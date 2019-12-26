@@ -4,15 +4,21 @@ const { AuthenticationError } = require('apollo-server-express')
 module.exports = {
   Query: {
     getUser: async (_, args, context, info) => {
+      let user
+      // get user
       try{
-        return context.models.User.findOne({
+        user = await context.models.User.findOne({
           where: {
             email: args.email
           }
         })
       } catch (err){
-        throw new AuthenticationError('User does not exist')
+        throw new AuthenticationError('Something bad happened. Contact support.')
       }
+      if(user == null){
+        throw new AuthenticationError('That user does not exist.')
+      }
+      return user
     },
     getUsers: async (_, args, context, info) => {
       try{
@@ -77,7 +83,6 @@ module.exports = {
       return { token, user }
     },
     updateUser: async (_, args, context, info) => {
-      console.log(context.user)
       let user
       let newPassword
       // get user
@@ -98,7 +103,7 @@ module.exports = {
       }
       // update user
       try{
-        user.update({
+        await user.update({
           firstName: args.firstName || user.dataValues.firstName,
           lastName: args.lastName || user.dataValues.lastName,
           email: args.email || user.dataValues.email,
