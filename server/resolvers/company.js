@@ -49,6 +49,7 @@ module.exports = {
           zipcode: args.zipcode || ''
         })
       } catch (err) {
+        console.log(err)
         throw new AuthenticationError('Something bad happened. Contact support.')
       }
       return company
