@@ -33,25 +33,32 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(5)
     },
     rating: {
-      type: DataTypes.FLOAT
+      type: DataTypes.FLOAT,
+      defaultValue: 5
     },
     wifi: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     bakery: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     milkAlt: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     indoorSeating: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     driveThru: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     clubCard: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -62,6 +69,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: new Date()
     }
   })
+
+  // Store.associate = (models) => {
+  //   Store.belongsTo(models.Company, {
+  //     foreignId: 'companyId'
+  //   })
+  // }
 
   Store.order = 0
 
