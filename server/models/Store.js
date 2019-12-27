@@ -32,6 +32,27 @@ module.exports = (sequelize, DataTypes) => {
     zipcode: {
       type: DataTypes.STRING(5)
     },
+    moHours: {
+      type: DataTypes.INTEGER
+    },
+    tuHours: {
+      type: DataTypes.INTEGER
+    },
+    weHours: {
+      type: DataTypes.INTEGER
+    },
+    thHours: {
+      type: DataTypes.INTEGER
+    },
+    frHours: {
+      type: DataTypes.INTEGER
+    },
+    saHours: {
+      type: DataTypes.INTEGER
+    },
+    suHours: {
+      type: DataTypes.INTEGER
+    },
     rating: {
       type: DataTypes.FLOAT,
       defaultValue: 5
