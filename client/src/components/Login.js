@@ -36,7 +36,7 @@ function Login (props){
 
   // when button clicked
   async function onSubmit(props){
-    form = document.querySelector('form')
+    form = await document.querySelector('form')
     
     // handle client errors
     status = await validate(form)
@@ -62,8 +62,8 @@ function Login (props){
             })
         // successful response
         await localStorage.setItem('token', results.data.login.token)
-      }
-      catch(err){
+        props.history.push('/')
+      } catch(err){
         // handle unsuccessful response
         let errorText = document.getElementById('errorText')
         errorText.innerHTML = err.toString().slice(22)
