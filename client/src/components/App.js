@@ -2,23 +2,28 @@ import React from 'react'
 import client from '../apolloClient.js'
 import Login from './Login'
 import Register from './Register'
+import Main from './Main'
 import { ApolloProvider } from 'react-apollo'
 import { Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
 
 function App() {
-
   return(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Switch>
           <Route 
+            exact path='/'
+            render={props => <Main {...props} client={client}/>}
+          />
+          <Route 
             exact path='/register'
-            render={props=> <Register {...props} client={client}/>}
+            render={props=> localStorage.getItem('token') ? 
+             (<Redirect to={{ pathname: '/'}}/>) : (<Register {...props} client={client}/>)}
           />
           <Route 
             exact path='/login' 
             render={props => localStorage.getItem('token') ? 
-              (<Redirect to={{ pathname: '/'}}/>) : (<Login {...props} client={client}/>)}
+             (<Redirect to={{ pathname: '/'}}/>) : (<Login {...props} client={client}/>)}
           />
           <ProtectedRoute>
           </ProtectedRoute>
