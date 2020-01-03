@@ -1,7 +1,6 @@
 import React from 'react'
-import validator from 'validator'
 import gql from 'graphql-tag'
-import Page from './Page'
+import validate from '../tools/validator'
 
 // ---- material-ui imports ----
 import Container from '@material-ui/core/Container'
@@ -31,22 +30,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Register (props) {
-  let form
-  let status
+  let registerForm = React.createRef()
+  let errorText = React.createRef()
 
   // styles instance
   const classes = useStyles()
 
   // on button click
-  async function onSubmit(props){
-    form = await document.querySelector('form')
-    
-    // handle client errors
-    status = await validate(form)
+  async function handleSubmit(event, props){
+    event.preventDefault()
 
-    // if successful hit server
-    if(status === 'valid'){
+    // check for client error & run mutation if none
       try{
+        await validate(registerForm)
         const results = await props.client
           .mutate({
             mutation: gql`
@@ -56,50 +52,30 @@ function Register (props) {
                 }
               }`,
             variables: {
-              email: form.email.value,
-              firstName: form.firstName.value,
-              password: form.password.value
+              email: registerForm.current.email.value,
+              firstName: registerForm.current.firstName.value,
+              password: registerForm.current.password.value
             }
           })
       // successful response
+      console.log(results)
       props.history.push('/login')
       } catch (err) {
+        let errMsg
         // handle unsuccessful response
-        let errorText = document.getElementById('errorText')
-        errorText.innerHTML = err.toString().slice(22)
+        errMsg = err.toString().lastIndexOf(':') + 1
+        errorText.current.innerHTML = err.toString().substring(errMsg, 50)
       }
-    }
   }
-
-  // handle client errors
-  async function validate(form){
-    let errorText = document.getElementById('errorText')
-    errorText.innerHTML = ''
-
-    // check email format
-    if(validator.isEmail(form.email.value) === false){
-      errorText.innerHTML = 'Please enter a real email.'
-    }
-    // check passwords
-    if(validator.isEmpty(form.password.value) === true){
-      errorText.innerHTML = 'Password cannot be empty.'
-    }
-    if(form.password.value !== form.confirmPassword.value){
-      errorText.innerHTML = 'Passwords do not match.'
-    }
-    // check firstname
-    if(validator.isByteLength(form.firstName.value, { min: 2 }) === false){
-      errorText.innerHTML = 'First Name must be atleast two characters.'
-    }
-    else return 'valid'
-  }
-
 
   return (
-    <Page>
       <Container maxWidth='sm'>
         <h1>Register Page</h1>
         <form
+          ref={registerForm}
+          onSubmit={(event) => {
+            handleSubmit(event, props)
+          }}
           className={classes.form}
         >
           <TextField
@@ -148,22 +124,19 @@ function Register (props) {
           />
           <FormHelperText
             className={classes.errors}
-            id='errorText'
+            ref={errorText}
             error={true}
           >
           </FormHelperText>
           <Button
             className={classes.button}
             variant='contained'
-            onClick={() => {
-              onSubmit(props)
-            }}
+            type='submit'
           >
             REGISTER
           </Button>
         </form>
       </Container>
-    </Page>
   )
 }
 
