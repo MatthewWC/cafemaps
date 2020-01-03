@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField'
 import FormHelperText from '@material-ui/core/FormHelperText'
 // -----------------------------
 
-import Page from './Page'
 import gql from 'graphql-tag'
 import validator from 'validator'
 
@@ -88,7 +87,6 @@ function Login (props){
   }
 
   return(
-    <Page>
       <Container maxWidth='sm'>
         <h1>Login Page</h1>
         <form 
@@ -128,7 +126,6 @@ function Login (props){
           </Button>
         </form>
       </Container>
-    </Page>
   )
 }
 
