@@ -32,40 +32,40 @@ const useStyles = makeStyles(theme => ({
 function Register (props) {
   let registerForm = React.createRef()
   let errorText = React.createRef()
-
+  
   // styles instance
   const classes = useStyles()
 
-  // on button click
+  // when button click
   async function handleSubmit(event, props){
     event.preventDefault()
 
     // check for client error & run mutation if none
-      try{
-        await validate(registerForm)
-        const results = await props.client
-          .mutate({
-            mutation: gql`
-              mutation register($email: String!, $firstName: String!, $password: String!){
-                register(email: $email, firstName: $firstName, password: $password){
-                  email
-                }
-              }`,
-            variables: {
-              email: registerForm.current.email.value,
-              firstName: registerForm.current.firstName.value,
-              password: registerForm.current.password.value
-            }
-          })
+    try{
+      await validate(registerForm)
+      const results = await props.client
+        .mutate({
+          mutation: gql`
+            mutation register($email: String!, $firstName: String!, $password: String!){
+              register(email: $email, firstName: $firstName, password: $password){
+                email
+              }
+            }`,
+          variables: {
+            email: registerForm.current.email.value,
+            firstName: registerForm.current.firstName.value,
+            password: registerForm.current.password.value
+          }
+        })
       // successful response
       console.log(results)
       props.history.push('/login')
-      } catch (err) {
-        let errMsg
-        // handle unsuccessful response
-        errMsg = err.toString().lastIndexOf(':') + 1
-        errorText.current.innerHTML = err.toString().substring(errMsg, 50)
-      }
+    } catch (err) {
+      let errMsg
+      // handle unsuccessful response
+      errMsg = err.toString().lastIndexOf(':') + 1
+      errorText.current.innerHTML = err.toString().substring(errMsg, 75)
+    }
   }
 
   return (
