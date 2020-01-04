@@ -34,8 +34,10 @@ module.exports = {
   },
   Mutation: {
     register: async (_, args, context, info) => {
-      // get hash
       let hash
+      let user
+      
+      // get hash
       try{
         hash = await hashPassword(args.password)
       } catch(err){
@@ -43,15 +45,16 @@ module.exports = {
       }
       // create user
       try{
-        return context.models.User.create({
+        user = await context.models.User.create({
           firstName: args.firstName,
           lastName: args.lastName,
           passwordHash: hash,
           email: args.email
         })
       } catch (err){
-        throw  new AuthenticationError('Email is already in use.')
+        throw new Error('Email is already in use.')
       }
+      return user
     },
     login: async (_, args, context, info) => {
       const errMsg = 'Username or Password is invalid.'
