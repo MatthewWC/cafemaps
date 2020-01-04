@@ -12,7 +12,7 @@ const validate = (form) => {
       if(formFields[item].name === 'email' && validator.isEmail(formFields[item].value) === false){
         throw Error('Please use a real email.')
       }
-      if(formFields[item].name === 'password' && formFields[item].value !== formFields.confirmPassword.value){
+      if(formFields[item].name === 'confirmPassword' && formFields[item].value !== formFields.password.value){
         throw Error('Passwords do not match.')
       }
     }
