@@ -9,18 +9,46 @@ import { makeStyles } from '@material-ui/core/styles'
 
 // material-ui styles
 const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    overflow: 'hidden'
+
+  },
   map: {
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0
+    bottom: 0,
   }
 }))
 
 function Map () {
-  console.log(window.outerWidth)
-  console.log(window.outerHeight)
+
+  // coffee shop icon
+  const LeafIcon = L.Icon.extend({
+    options: {
+        iconUrl: 'CoffeeCup.png',
+        iconSize:     [38, 38],
+        iconAnchor:   [0, 0],
+        popupAnchor:  [15, 0]
+    }
+  });
+  const iconOne = new LeafIcon()
+
+  //your location
+  const userIcon = L.Icon.extend({
+    options: {
+      iconUrl: 'home.png',
+      iconSize: [38,38],
+      iconAncher: [22, 94],
+      popupAnchor:  [0, -20]
+    }
+  })
+  const userLocation = new userIcon()
   
   // styles instance
   const classes = useStyles()
@@ -29,22 +57,28 @@ function Map () {
   useEffect(() => {
     const map = L.map('map', {
       // map starting spot
-      center: [51.5, -0.09],
+      center: [34.357719, -84.040246],
       zoom: 25,
       zoomControl: false
-    })
+    }, [])
 
     // map tile design
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       detectRetina: true,
       maxZoom: 19,
     }).addTo(map)
+    L.marker([34.357719, -84.040246], {icon: userLocation}).addTo(map).bindPopup('You are here.')
+    L.marker([34.349482, -84.049601], {icon: iconOne}).addTo(map).bindPopup("Starbucks");
+    L.marker([51.495, -0.083], {icon: iconOne}).addTo(map).bindPopup("I am a coffee.");
+    L.marker([51.49, -0.1], {icon: iconOne}).addTo(map).bindPopup("I am a coffee.");
 
   })
 
   // return map container
   return (
-    <div className={classes.map} id='map'/>
+    <div className={classes.root}>
+      <div className={classes.map} id='map'/>
+    </div>
   )
   
 }
