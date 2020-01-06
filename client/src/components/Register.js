@@ -3,28 +3,32 @@ import gql from 'graphql-tag'
 import validate from '../tools/validator'
 
 // ---- material-ui imports ----
-import Container from '@material-ui/core/Container'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import Typography from '@material-ui/core/Typography'
 // -----------------------------
 
 // material-ui styles
 const useStyles = makeStyles(theme => ({
   form: {
-    marginTop: theme.spacing(1),
-    width: '100%'
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    textAlign: 'center',
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing(2),
+    maxWidth: '400px'
   },
   fields: {
-    margin: theme.spacing(1),
-    width: '97%'
   },
   button: {
 
   },
   errors: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(2)
   }
 
 }))
@@ -69,74 +73,74 @@ function Register (props) {
   }
 
   return (
-      <Container maxWidth='sm'>
-        <h1>Register Page</h1>
-        <form
-          ref={registerForm}
-          onSubmit={(event) => {
-            handleSubmit(event, props)
-          }}
-          className={classes.form}
-        >
-          <TextField
-            className={classes.fields}
-            name='email'
-            margin='normal'
-            variant='outlined'
-            label='Email'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            type='text'
-          />
-          <TextField
-            className={classes.fields}
-            name='firstName'
-            margin='normal'
-            variant='outlined'
-            label='First Name'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            type='text'
-          />
-          <TextField
-            className={classes.fields}
-            name='password'
-            margin='normal'
-            variant='outlined'
-            label='Password'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            type='text'
-          />
-          <TextField
-            className={classes.fields}
-            name='confirmPassword'
-            margin='normal'
-            variant='outlined'
-            label='Confirm Password'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            type='text'
-          />
-          <FormHelperText
-            className={classes.errors}
-            ref={errorText}
-            error={true}
-          >
-          </FormHelperText>
-          <Button
-            className={classes.button}
-            variant='contained'
-            type='submit'
-          >
-            REGISTER
-          </Button>
-        </form>
-      </Container>
+    <form
+      className={classes.form}
+      ref={registerForm}
+      onSubmit={(event) => {
+        handleSubmit(event, props)
+      }}
+    >
+      <Typography>
+        Register
+      </Typography>
+      <TextField
+        className={classes.fields}
+        name='email'
+        margin='normal'
+        variant='outlined'
+        label='Email'
+        InputLabelProps={{
+          shrink: true,
+        }}
+        type='text'
+      />
+      <TextField
+        className={classes.fields}
+        name='firstName'
+        margin='normal'
+        variant='outlined'
+        label='First Name'
+        InputLabelProps={{
+          shrink: true,
+        }}
+        type='text'
+      />
+      <TextField
+        className={classes.fields}
+        name='password'
+        margin='normal'
+        variant='outlined'
+        label='Password'
+        InputLabelProps={{
+          shrink: true,
+        }}
+        type='text'
+      />
+      <TextField
+        className={classes.fields}
+        name='confirmPassword'
+        margin='normal'
+        variant='outlined'
+        label='Confirm Password'
+        InputLabelProps={{
+          shrink: true,
+        }}
+        type='text'
+      />
+      <FormHelperText
+        className={classes.errors}
+        ref={errorText}
+        error={true}
+      >
+      </FormHelperText>
+      <Button
+        className={classes.button}
+        variant='contained'
+        type='submit'
+      >
+        REGISTER
+      </Button>
+    </form>
   )
 }
 
