@@ -2,6 +2,7 @@ import React from 'react'
 import client from '../apolloClient.js'
 import Login from './Login'
 import Register from './Register'
+import Map from './Map'
 import Header from './Header'
 import { ApolloProvider } from 'react-apollo'
 import { Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
@@ -12,6 +13,10 @@ function App() {
       <BrowserRouter>
        <Header/>
         <Switch>
+          <Route
+            exact path='/'
+            render={props => <Map {...props} client={client}/>}
+          />
           <Route 
             exact path='/register'
             render={props=> localStorage.getItem('token') ? 
