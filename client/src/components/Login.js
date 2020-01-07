@@ -2,31 +2,54 @@ import React from 'react'
 import gql from 'graphql-tag'
 import validate from '../tools/validator'
 // ---- material-ui imports ----
-import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import Typography from '@material-ui/core/Typography'
+import Link from "@material-ui/core/Link"
+import Divider from '@material-ui/core/Divider'
 // -----------------------------
+
+//TODO: add google sigin in
+//TODO: forgot password page & link
 
 // material ui styles
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
+    height: '90vh',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxWidth: '1024px',
+    padding: '5%'
+  },
+  login: {
+    textAlign: 'center',
+    margin: 'auto',
+    width: '100%',
+    maxWidth: '300px'
+  },
+  title: {
 
   },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
+  button: {
+    width: '100%'
   },
-  fields: {
-    margin: theme.spacing(1),
-    width: '97%'
+  fields : {
+    width: '100%'
   },
   errors: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(2)
+  },
+  divider: {
+    marginTop: theme.spacing(5)
+  },
+  registerText: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '10px',
+    
   }
 }))
 
@@ -73,48 +96,69 @@ function Login (props){
   }
 
   return(
-      <Container 
-        className={classes.root}
-        maxWidth='sm'>
-        <h1>Login Page</h1>
-        <form 
-          ref={loginForm}
-          onSubmit={(event) => {
-            handleSubmit(event, props)
+    <div className={classes.root}>
+      <div className={classes.login}>
+      <form          
+        ref={loginForm}
+        onSubmit={(event) => {
+          handleSubmit(event, props)
+        }}>
+        <Typography
+          variant='h4'>
+          Log in
+        </Typography>
+        <Typography
+          variant='h6'>
+          &
+        </Typography>
+        <Typography
+          variant='h6'>
+          Start Mapping!
+        </Typography>
+        <TextField
+          className={classes.fields}
+          name='email'
+          margin='normal'
+          variant='outlined'
+          label='Email'
+          InputLabelProps={{
+            shrink: true,
           }}
-          className={classes.form}>
-          <TextField
-            className={classes.fields}
-            name='email'
-            margin='normal'
-            variant='outlined'
-            label='Email'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            type='text'/>
-          <TextField
-            className={classes.fields}
-            name='password'
-            margin='normal'
-            variant='outlined'
-            label='Password'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            type='text'/>
-          <FormHelperText
-            className={classes.errors}
-            ref={errorText}
-            error={true}>
-          </FormHelperText>
-          <Button
-            variant='contained'
-            type='submit'>
-            LOGIN
-          </Button>
-        </form>
-      </Container>
+          type='text'/>
+        <TextField
+          className={classes.fields}
+          name='password'
+          margin='normal'
+          variant='outlined'
+          label='Password'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          type='text'/>
+        <FormHelperText
+          className={classes.errors}
+          ref={errorText}
+          error={true}>
+        </FormHelperText>
+        <Button
+          className={classes.button}
+          variant='contained'
+          type='submit'>
+          LOGIN
+        </Button>
+      </form>
+      <Divider className={classes.divider}/>
+        <div className={classes.registerText}>
+          <Typography> 
+            New around here?...
+            <Link
+              href={'/register'}>
+              Register.
+            </Link>
+          </Typography>
+        </div>
+      </div>
+    </div>
   )
 }
 
