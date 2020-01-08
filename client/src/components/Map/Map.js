@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import populateStores from './Markers/populateStores'
+import populateUsers from './Markers/populateUsers'
 // ---- material-ui imports ----
 import { makeStyles } from '@material-ui/core/styles'
 // -----------------------------
@@ -27,29 +29,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Map () {
-
-  // coffee shop icon
-  const LeafIcon = L.Icon.extend({
-    options: {
-        iconUrl: 'CoffeeCup.png',
-        iconSize:     [38, 38],
-        iconAnchor:   [0, 0],
-        popupAnchor:  [15, 0]
-    }
-  });
-  const iconOne = new LeafIcon()
-
-  //your location
-  const userIcon = L.Icon.extend({
-    options: {
-      iconUrl: 'home.png',
-      iconSize: [38,38],
-      iconAncher: [22, 94],
-      popupAnchor:  [0, -20]
-    }
-  })
-  const userLocation = new userIcon()
-  
   // styles instance
   const classes = useStyles()
 
@@ -67,11 +46,11 @@ function Map () {
       detectRetina: true,
       maxZoom: 19,
     }).addTo(map)
-    L.marker([34.357719, -84.040246], {icon: userLocation}).addTo(map).bindPopup('You are here.')
-    L.marker([34.349482, -84.049601], {icon: iconOne}).addTo(map).bindPopup("Starbucks");
-    L.marker([51.495, -0.083], {icon: iconOne}).addTo(map).bindPopup("I am a coffee.");
-    L.marker([51.49, -0.1], {icon: iconOne}).addTo(map).bindPopup("I am a coffee.");
 
+    // markers
+    populateStores(map)
+    populateUsers(map)
+    
   })
 
   // return map container
