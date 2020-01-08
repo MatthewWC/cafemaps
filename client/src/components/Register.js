@@ -10,6 +10,9 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import Typography from '@material-ui/core/Typography'
 // -----------------------------
 
+//TODO: research privacy policy/accept terms
+//TODO: captcha? spam prevent
+
 // material-ui styles
 const useStyles = makeStyles(theme => ({
   form: {
