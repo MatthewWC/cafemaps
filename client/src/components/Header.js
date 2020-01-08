@@ -67,6 +67,7 @@ function Header () {
             <MenuItem 
               onClick={() => {
               localStorage.removeItem('token')
+              localStorage.removeItem('email')
               handleClose()
               }}
               component={Link}
