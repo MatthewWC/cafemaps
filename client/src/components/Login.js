@@ -85,6 +85,7 @@ function Login (props){
         })
     // successful response
     await localStorage.setItem('token', results.data.login.token)
+    await localStorage.setItem('email', results.data.login.user.email)
     props.history.push('/')
     } 
     catch(err){
