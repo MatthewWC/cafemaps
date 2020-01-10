@@ -38,21 +38,10 @@ exports.createBearerToken = function (tokenData, role = 'user') {
   })
 }
 
-exports.verifyBearerToken = function (token, role = 'user') {
-  return new Promise((resolve, reject) => {
-    let secret
-    switch (role) {
-      case 'admin':
-        secret = process.env.JWT_TOKEN_ADMIN_SECRET
-        break
-      case 'user':
-      default:
-        secret = process.env.JWT_TOKEN_USER_SECRET
-        break
-    }
-    jwt.verify(token, secret, (err, res) => {
-      if (err) return reject(err)
-      return resolve(res)
-    })
-  })
+exports.verifyBearerToken = function (token) {
+  try{
+    jwt.verify(token, process.env.JWT_TOKEN_SECRET)
+  } catch (err){
+    console.log('didnt work')
+  }
 }
