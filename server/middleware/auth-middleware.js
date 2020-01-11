@@ -27,8 +27,15 @@ function accessBuilder(role) {
             email: email
           }
         })
-      } catch (error){
-        // link up error handler
+        // if successful, attach user to request
+        if(account) {
+          req.user = account
+          return next()
+        }
+      } 
+      // if unsuccessful, throw to promise
+      catch (error){
+        return next(error)
       }
     }
   }
@@ -44,8 +51,8 @@ authMiddleware.graphql = (req, res) => {
   // what allows auth to accept a role, creates promise
   return role => new Promise((resolve, reject) => {
     // handle role, and token checks
-    accessBuilder(role)(req, res, err => {
-      if (err) return reject(err)
+    accessBuilder(role)(req, res, error => {
+      if (error) return reject(error)
       return resolve()
     })
   })
