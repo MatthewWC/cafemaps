@@ -70,7 +70,7 @@ module.exports = gql`
       lastName: String, 
       password: String,
       email: String
-    ): User!
+    ): LoginResponse!
 
     deleteUser(password: String!): User
 
