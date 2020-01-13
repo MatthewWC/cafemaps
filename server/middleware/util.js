@@ -22,13 +22,13 @@ exports.comparePassword = function (password, hash) {
   })
 }
 
-exports.createBearerToken = function (tokenData, role = 'user') {
+exports.createBearerToken = function (tokenData, role = 'USER') {
   let secret
   switch (role) {
-    case 'admin':
+    case 'ADMIN':
       secret = process.env.JWT_TOKEN_ADMIN_SECRET
       break
-    case 'user':
+    case 'USER':
     default:
       secret = process.env.JWT_TOKEN_USER_SECRET
       break
@@ -38,14 +38,14 @@ exports.createBearerToken = function (tokenData, role = 'user') {
   })
 }
 
-exports.verifyBearerToken = function (token, role = 'user') {
+exports.verifyBearerToken = function (token, role = 'USER') {
   return new Promise((resolve, reject) => {
     let secret
     switch (role) {
-      case 'admin':
+      case 'ADMIN':
         secret = process.env.JWT_TOKEN_ADMIN_SECRET
         break
-      case 'user':
+      case 'USER':
       default:
         secret = process.env.JWT_TOKEN_USER_SECRET
         break
