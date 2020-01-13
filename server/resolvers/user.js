@@ -1,147 +1,126 @@
-const { hashPassword, comparePassword, createBearerToken, verifyBearerToken } = require('../auth/util')
-const { AuthenticationError } = require('apollo-server-express')
+const { hashPassword, comparePassword, createBearerToken, verifyBearerToken } = require('../middleware/util')
+const { UnknownError, ForbiddenError, UnauthorizedError } = require('../errors')
+
+//TODO: on account delete, send email
+//TODO: email verify
 
 module.exports = {
   Query: {
     getUser: async (_, args, context, info) => {
-      let user
-      // get user
-      try{
-        user = await context.models.User.findOne({
-          where: {
-            email: args.email
-          }
-        })
-      } catch (err){
-        throw new AuthenticationError('Something bad happened. Contact support.')
+      try {
+        // handle auth
+        await context.auth('USER')
+        // return user associated with token
+        return context.req.user
+      } catch (error) {
+        throw new UnknownError
       }
-      if(user == null){
-        throw new AuthenticationError('That user does not exist.')
-      }
-      return user
     },
     getUsers: async (_, args, context, info) => {
       try{
-        return context.models.User.findAll({
+        // handle auth
+        await context.auth('ADMIN')
+        // return array of users matching search
+        return await context.models.User.findAll({
           where: {
             firstName: args.firstName
           }
         })
-      } catch (err) {
-        throw new AuthenticationError('User does not exist')
+      } catch (error) {
+         throw new UnknownError
       }
     }
   },
   Mutation: {
     register: async (_, args, context, info) => {
-      let hash
-      let user
-      
-      // get hash
       try{
-        hash = await hashPassword(args.password)
-      } catch(err){
-        throw new InternalError('Something bad happened. Contact support.')
-      }
-      // create user
-      try{
-        user = await context.models.User.create({
+        context.auth('public')
+        // get hash
+        let hash = await hashPassword(args.password)
+        // create user
+        return await context.models.User.create({
+          role: 'USER',
           firstName: args.firstName,
           lastName: args.lastName,
           passwordHash: hash,
           email: args.email
         })
-      } catch (err){
-        throw new Error('Email is already in use.')
-      }
-      return user
-    },
-    login: async (_, args, context, info) => {
-      const errMsg = 'Username or Password is invalid.'
-      // Get user
-      let user
-      try {
-      user = await context.models.User.findOne({
-        where: { email: args.email }
-      })
-      } catch (err) {
-        throw new AuthenticationError(errMsg)
-      }
-      // Check password
-      try{
-        await comparePassword(args.password, user.dataValues.passwordHash)  
-      } catch (err) {
-        throw new AuthenticationError(errMsg)
-      }
-      // Create token
-      let token
-      try {
-        token = createBearerToken({
-          id: user.dataValues.id,
-          email: user.dataValues.email
+      } catch (error){
+        throw new ForbiddenError({
+            message: 'Email is already in use.'
         })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
+      }
+    },
+    login: async (_, { email, password }, context, info) => {
+      let token
+      let user
+      try{
+        // handle auth
+        context.auth('public')
+        // get user
+        context.req.user = await context.models.User.findOne({ where: { email: email }})
+        user = context.req.user
+        // check password
+        await comparePassword(password, context.req.user.dataValues.passwordHash)
+        // Create token
+        token = createBearerToken({
+          role: context.req.user.dataValues.role,
+          id: context.req.user.dataValues.id,
+          email: context.req.user.dataValues.email
+        }, context.req.user.role)
+      } catch (error) {
+        throw new UnauthorizedError({
+          message: 'Invalid email or password.'
+        })
       }
       return { token, user }
     },
     updateUser: async (_, args, context, info) => {
-      let user
+      // TODO: create new token after update
       let newPassword
-      // get user
+      let token
+      let user
       try{
-        user = await context.models.User.findOne({
-          where: { email: context.user.email }
-        })
-      } catch (err) {
-        throw new AuthenticationError('Please login first.')
-      }
-      // check password update
-      if(args.password){
-        try{
+        // check login
+        await context.auth('USER')
+        // get user
+        user = context.req.user
+        // hash new password
+        if(args.password){
           newPassword = await hashPassword(args.password)
-        } catch (err) {
-          throw new AuthenticationError('Invalid password')
         }
-      }
-      // update user
-      try{
-        await user.update({
-          firstName: args.firstName || user.dataValues.firstName,
-          lastName: args.lastName || user.dataValues.lastName,
-          email: args.email || user.dataValues.email,
-          passwordHash: newPassword || user.dataValues.passwordHash
+        // update user
+        await context.req.user.update({
+          firstName: args.firstName || context.req.user.dataValues.firstName,
+          lastName: args.lastName || context.req.user.dataValues.lastName,
+          email: args.email || context.req.user.dataValues.email,
+          passwordHash: newPassword || context.req.user.dataValues.passwordHash
         })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
+        // create new token if email change
+        if(args.email) {
+          token = createBearerToken({
+            role: context.req.user.role,
+            id: context.req.user.dataValues.id,
+            email: context.req.user.dataValues.email
+          }, context.req.user.role)
+        }
+      } catch (error) {
+        throw new UnknownError
       }
-      return user
+      return { token, user }
     },
     deleteUser: async (_, args, context, info) => {
       let user
-      // get user
       try{
-        user = await context.models.User.findOne({
-          where: {
-            email: context.user.email
-          }
-        })
-      } catch (err) {
-        throw new AuthenticationError('Please login first.')
-      }
-      //check password
-      try{
+        // get user
+        await context.auth('USER')
+        user = context.req.user
+        //check password
         await comparePassword(args.password, user.dataValues.passwordHash)
-      } catch (err) {
-        throw new AuthenticationError('Invalid password')
-      }
-      // delete user
-      try{
-        await user.destroy({
-          force: true
-        })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
+        // delete user
+        await context.req.user.destroy({ force: true })
+      } catch (error) {
+        throw new UnknownError
       }
       return user
     }
