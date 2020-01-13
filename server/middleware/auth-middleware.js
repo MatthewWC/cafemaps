@@ -1,5 +1,6 @@
 const { verifyBearerToken } = require('./util')
 const { models } = require('../config/sequelize')
+const { UnauthorizedError, UnknownError, ForbiddenError } = require('../errors.js')
 
 function accessBuilder(role) {
   return async (req, res, next) => {
@@ -15,15 +16,16 @@ function accessBuilder(role) {
     const bearerHeader = authHeader ? authHeader.split('Bearer ')[1] : undefined
 
     // req.query.bearer <== restful api stuff, review later
-    const bearer = req.query.bearer || bearerHeader
-
+    const bearer =  bearerHeader
+    
     if(bearer){
       try{
+        console.log(role)
+        console.log(bearer)
         // await promise to verify users token, and save email.
         const { email } = await verifyBearerToken(bearer, role)
         // access data model and get user associated with email
-        const account = await models.User.findOne({
-          where: {
+        const account = await models.User.findOne({where: {
             email: email
           }
         })
@@ -35,9 +37,16 @@ function accessBuilder(role) {
       } 
       // if unsuccessful, throw to promise
       catch (error){
-        return next(error)
+        switch(error.message){
+          case 'invalid signature':
+            return next(new ForbiddenError) 
+          case 'jwt expired':
+          default:
+            return next(new UnauthorizedError)
+        }
       }
     }
+    return next(new UnknownError)
   }
 }
 
