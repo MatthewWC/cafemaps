@@ -7,6 +7,7 @@ import Header from './Header'
 import Profile from './Profile'
 import { ApolloProvider } from 'react-apollo'
 import { Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
+import EditProfile from './Profile/EditProfile'
 
 function App() {
   return(
@@ -17,6 +18,10 @@ function App() {
           <Route 
             exact path='/profile'
             render={props => <Profile {...props} client={client}/>}
+          />
+          <Route 
+            exact path='/edit_profile'
+            render={props => <EditProfile {...props} client={client}/>}
           />
           <Route
             exact path='/'
