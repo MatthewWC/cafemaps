@@ -3,7 +3,8 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
   type User {
     role: Role!
-    firstName: String!,
+    imageUrl: String
+    firstName: String,
     lastName: String,
     password: String!,
     email: String!
@@ -25,18 +26,20 @@ module.exports = gql`
     companyId: String!,
     storeName: String!,
     email: String!,
+    imageUrl: String,
     addressOne: String!,
     addressTwo: String,
     city: String!,
     state: String!,
     zipcode: Float!,
-    moHours: Int,
-    tuHours: Int,
-    weHours: Int,
-    thHours: Int,
-    frHours: Int,
-    saHours: Int,
-    suHours: Int,
+    moHours: String,
+    tuHours: String,
+    weHours: String,
+    thHours: String,
+    frHours: String,
+    saHours: String,
+    suHours: String,
+    rating: Float,
     wifi: Boolean!,
     bakery: Boolean!,
     milkAlt: Boolean!,
@@ -48,14 +51,12 @@ module.exports = gql`
   type Query {
     getUser(email: String): User!
     getUsers(firstName: String): [User!]
-    getCompany(companyName: String, id: String): Company!
+    getCompany(companyName: String, id: String): Company
     getStore(id: String!): Store!
   }
     
   type Mutation {
     register(
-      firstName: String!,
-      lastName: String, 
       password: String!, 
       email: String!
     ): User!
@@ -66,6 +67,7 @@ module.exports = gql`
     ): LoginResponse!
 
     updateUser(
+      imageUrl: String,
       firstName: String, 
       lastName: String, 
       password: String,
@@ -102,18 +104,19 @@ module.exports = gql`
       companyName: String!,
       email: String,
       storeName: String!,
+      imageUrl: String,
       addressOne: String!,
       addressTwo: String,
       city: String!,
       state: String!,
       zipcode: String!,
-      moHours: Int,
-      tuHours: Int,
-      weHours: Int,
-      thHours: Int,
-      frHours: Int,
-      saHours: Int,
-      suHours: Int,
+      moHours: String,
+      tuHours: String,
+      weHours: String,
+      thHours: String,
+      frHours: String,
+      saHours: String,
+      suHours: String,
       rating: Float,
       wifi: Boolean,
       bakery: Boolean,
@@ -127,18 +130,19 @@ module.exports = gql`
       id: String!,
       storeName: String,
       email: String,
+      imageUrl: String,
       addressOne: String,
       addressTwo: String,
       city: String,
       state: String,
       zipcode: String,
-      moHours: Int,
-      tuHours: Int,
-      weHours: Int,
-      thHours: Int,
-      frHours: Int,
-      saHours: Int,
-      suHours: Int,
+      moHours: String,
+      tuHours: String,
+      weHours: String,
+      thHours: String,
+      frHours: String,
+      saHours: String,
+      suHours: String,
       rating: Float,
       wifi: Boolean,
       bakery: Boolean,
