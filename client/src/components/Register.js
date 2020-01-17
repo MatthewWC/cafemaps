@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography'
 
 //TODO: research privacy policy/accept terms
 //TODO: captcha? spam prevent
+//TODO: add successful registration display
 
 // material-ui styles
 const useStyles = makeStyles(theme => ({
@@ -49,18 +50,17 @@ function Register (props) {
 
     // check for client error & run mutation if none
     try{
-      await validate(registerForm)
+      validate(registerForm)
       const results = await props.client
         .mutate({
           mutation: gql`
-            mutation register($email: String!, $firstName: String!, $password: String!){
-              register(email: $email, firstName: $firstName, password: $password){
+            mutation register($email: String!, $password: String!){
+              register(email: $email, password: $password){
                 email
               }
             }`,
           variables: {
             email: registerForm.current.email.value,
-            firstName: registerForm.current.firstName.value,
             password: registerForm.current.password.value
           }
         })
@@ -77,6 +77,7 @@ function Register (props) {
 
   return (
     <form
+      name='registerForm'
       className={classes.form}
       ref={registerForm}
       onSubmit={(event) => {
@@ -92,17 +93,6 @@ function Register (props) {
         margin='normal'
         variant='outlined'
         label='Email'
-        InputLabelProps={{
-          shrink: true,
-        }}
-        type='text'
-      />
-      <TextField
-        className={classes.fields}
-        name='firstName'
-        margin='normal'
-        variant='outlined'
-        label='First Name'
         InputLabelProps={{
           shrink: true,
         }}
