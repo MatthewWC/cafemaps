@@ -1,112 +1,77 @@
-const { AuthenticationError } = require('apollo-server-express')
+const { UnknownError } = require('../errors')
 
 module.exports = {
   Query: {
     getCompany: async (_, args, context, info) => {
-      let company
-      // get company
       try{
+        //handle auth
+        context.auth('PUBLIC')
+        // return company
         switch(Object.keys(args)[0]){
           case 'companyName':
-              company = await context.models.Company.findOne({
+              return await context.models.Company.findOne({
                 where: { 
                   companyName: args.companyName         
                 }
               })
-            break
           case 'id':
-              company = await context.models.Company.findOne({
+              return await context.models.Company.findOne({
                 where: { 
                   id: args.id      
                 }
               })
-            break
           default:
             break
         }
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
+      } catch (error) {
+        throw new UnknownError
       }
-      // if doesnt exist
-      if(company == null){
-        throw new AuthenticationError('That company does not exist.')
-      }
-      return company
     }
   },
   Mutation: {
     createCompany: async (_, args, context, info) => {
-      let company
-      // create
-      try{
-        company = await context.models.Company.create({
-          companyName: args.companyName,
-          email: args.email,
-          addressOne: args.addressOne || '',
-          addressTwo: args.addressTwo || '',
-          city: args.city || '',
-          state: args.state || '',
-          zipcode: args.zipcode || ''
-        })
-      } catch (err) {
-        console.log(err)
-        throw new AuthenticationError('Something bad happened. Contact support.')
-      }
-      return company
+      // handle auth
+      await context.auth('ADMIN')
+      // create company
+      return await context.models.Company.create({
+        companyName: args.companyName,
+        email: args.email,
+        addressOne: args.addressOne || '',
+        addressTwo: args.addressTwo || '',
+        city: args.city || '',
+        state: args.state || '',
+        zipcode: args.zipcode || ''
+      })
     },
     updateCompany: async (_, args, context, info) => {
-      let company
+      // handle auth
+      await context.auth('ADMIN')
       // get company
-      try{
-        company = await context.models.Company.findOne({
-          where: {
-            companyName: args.companyName,
-          }
-        })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
-      }
-      if(company == null){
-        throw new AuthenticationError('That company does not exist.')
+      const company = await context.models.Company.findOne({
+        where: { companyName: args.companyName }
+      })
+      // cant be null
+      if(company === null){
+        throw new Error('That company does not exist.')
       }
       // update company
-      try{
-        await company.update({
-          email: args.email || company.dataValues.email,
-          addressOne: args.addressOne || company.dataValues.addressOne,
-          addressTwo: args.addressTwo || company.dataValues.addressTwo,
-          city: args.city || company.dataValues.city,
-          state: args.state || company.dataValues.state,
-          zipcode: args.zipcode || company.dataValues.zipcode
-        })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
-      }
-      return company
+      return await company.update({
+        email: args.email || company.dataValues.email,
+        addressOne: args.addressOne || company.dataValues.addressOne,
+        addressTwo: args.addressTwo || company.dataValues.addressTwo,
+        city: args.city || company.dataValues.city,
+        state: args.state || company.dataValues.state,
+        zipcode: args.zipcode || company.dataValues.zipcode
+      })
     },
-    deleteCompany: async (_, args, context, info) => {
-      let company
+    deleteCompany: async (_, { companyName }, context, info) => {
+      await context.auth('ADMIN')
       // get company
-      try{
-        company = await context.models.Company.findOne({
-          where: {
-            companyName: args.companyName
-          }
-        })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
-      }
-      if(company == null){
-        throw new AuthenticationError('That company does not exist.')
-      }
+      const company = await context.models.Company.findOne({
+        where: { companyName: companyName }
+      })
       // delete company
-      try{
-        await company.destroy({
-          force: true
-        })
-      } catch (err) {
-        throw new AuthenticationError('Something bad happened. Contact support.')
-      }
+      await company.destroy({ force: true })
       return company
     }
   }
