@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING
     },
+    imageUrl: {
+      type: DataTypes.STRING
+    },
     addressOne: {
       type: DataTypes.STRING
     },
@@ -33,25 +36,25 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(5)
     },
     moHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     tuHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     weHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     thHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     frHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     saHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     suHours: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     rating: {
       type: DataTypes.FLOAT,
