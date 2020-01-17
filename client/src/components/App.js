@@ -5,9 +5,13 @@ import Register from './Register'
 import Map from './Map'
 import Header from './Header'
 import Profile from './Profile'
+import Store from './Store'
+import CreateStore from './Store/CreateStore'
 import { ApolloProvider } from 'react-apollo'
 import { Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
 import EditProfile from './Profile/EditProfile'
+
+//TODO: further secure admin endpoints with protected route  
 
 function App() {
   return(
@@ -15,13 +19,13 @@ function App() {
       <BrowserRouter>
        <Header/>
         <Switch>
-          <Route 
-            exact path='/profile'
-            render={props => <Profile {...props} client={client}/>}
+          <Route
+            exact path='/createStore'
+            render={props => <CreateStore {...props} client={client}/>}
           />
-          <Route 
-            exact path='/edit_profile'
-            render={props => <EditProfile {...props} client={client}/>}
+          <Route
+            exact path='/store'
+            render={props => <Store {...props} client={client}/>}
           />
           <Route
             exact path='/'
@@ -38,6 +42,14 @@ function App() {
              (<Redirect to={{ pathname: '/'}}/>) : (<Login {...props} client={client}/>)}
           />
           <ProtectedRoute>
+            <Route 
+              exact path='/profile'
+              render={props => <Profile {...props} client={client}/>}
+            />
+            <Route 
+              exact path='/edit_profile'
+              render={props => <EditProfile {...props} client={client}/>}
+            />
           </ProtectedRoute>
         </Switch>
       </BrowserRouter>
@@ -45,7 +57,7 @@ function App() {
   )
 }
 
-// handle logged out, or expired token
+// handle logged out
 function ProtectedRoute({
   children,
   ...props
