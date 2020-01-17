@@ -66,7 +66,7 @@ function Login (props){
 
     // check for client errors & run mutation if none
     try{
-      await validate(loginForm)
+      validate(loginForm)
       const results = await props.client
         .mutate({
           mutation: gql`
@@ -89,6 +89,7 @@ function Login (props){
     props.history.push('/')
     } 
     catch(err){
+      console.log(err)
       let errMsg
       // handle unsuccessful response
       errMsg = err.toString().lastIndexOf(':') + 1
@@ -99,7 +100,8 @@ function Login (props){
   return(
     <div className={classes.root}>
       <div className={classes.login}>
-      <form          
+      <form        
+        name='loginForm'  
         ref={loginForm}
         onSubmit={(event) => {
           handleSubmit(event, props)
