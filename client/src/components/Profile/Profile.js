@@ -48,14 +48,13 @@ function Profile (props) {
   }
 
   if(error){
-    console.log(error)
     return(
       <div className={classes.root}>
-        <h1>{error.message}</h1>
+        <h1>Something bad happend. Contact support.</h1>
       </div>
     )
   }
-
+  
   return(
     <div className={classes.root}>
       <div className={classes.imageOuterContainer}>
@@ -64,7 +63,7 @@ function Profile (props) {
         </div>
         <Typography
           variant='h5'>
-          {`${data.getUser.firstName} ${data.getUser.lastName || ''}`}
+          {`${data.getUser.firstName || 'User' } ${data.getUser.lastName || ''}`}
         </Typography>
         <Button
           className={classes.button}
