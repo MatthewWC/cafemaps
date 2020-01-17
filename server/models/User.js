@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('ADMIN', 'USER'),
       defaultValue: 'USER'
     },
+    imageUrl: {
+      type: DataTypes.STRING
+    },
     firstName: {
       type: DataTypes.STRING
     },
