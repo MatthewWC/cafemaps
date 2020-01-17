@@ -2,26 +2,29 @@ const { verifyBearerToken } = require('./util')
 const { models } = require('../config/sequelize')
 const { UnauthorizedError, UnknownError, ForbiddenError } = require('../errors.js')
 
+const secureMe = require('secure.me')
+const secure = secureMe()
+
 function accessBuilder(role) {
   return async (req, res, next) => {
+    // TODO: get ip address
 
     // if public resolver, skip auth
-    if(role === 'public') return next()
+    if(role === 'PUBLIC') return next()
 
+    console.log('in accessbuilder')
     // get auth header
     const authHeader = req.header('Authorization')
-    
+
     // if header exists split, link for better understanding.
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split 
     const bearerHeader = authHeader ? authHeader.split('Bearer ')[1] : undefined
 
     // req.query.bearer <== restful api stuff, review later
-    const bearer =  bearerHeader
+    const bearer =  req.query.bearer || bearerHeader
     
     if(bearer){
       try{
-        console.log(role)
-        console.log(bearer)
         // await promise to verify users token, and save email.
         const { email } = await verifyBearerToken(bearer, role)
         // access data model and get user associated with email
@@ -37,10 +40,12 @@ function accessBuilder(role) {
       } 
       // if unsuccessful, throw to promise
       catch (error){
+        
         switch(error.message){
           case 'invalid signature':
             return next(new ForbiddenError) 
           case 'jwt expired':
+            return next(new UnauthorizedError)
           default:
             return next(new UnauthorizedError)
         }
@@ -52,7 +57,23 @@ function accessBuilder(role) {
 
 // auth middleware for rest router, not using atm.
 function authMiddleware(router){
-  console.log(router)
+  router.access = {
+    public: (req, res, next) => {
+      // req.requestId = v4()
+      next()
+    },
+    user: accessBuilder('USER'),
+    admin: accessBuilder('ADMIN')
+  }
+
+  secure.setMiddlewares([
+    router.access.public,
+    router.access.user,
+    router.access.admin
+  ])
+
+  secure.setDefault(router.access.user)
+  secure.secureRoutes(router)
 }
 
 // accessed through server context, when auth is called executes function
