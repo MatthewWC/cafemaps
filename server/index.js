@@ -2,13 +2,17 @@ require('dotenv').config()
 const { ApolloServer } = require('apollo-server-express')
 const resolvers = require('./resolvers')
 const typeDefs = require('./config/typeDefs')
-const jwt = require('jsonwebtoken')
 const { models, connection } = require('./config/sequelize')
 const express = require('express')
 const authMiddleware = require('./middleware/auth-middleware')
-
+const cors = require('cors')
+const { imageUpload } = require('./config/imageUpload')
+const { Router } = require('express')
+const multer = require('multer')
+const upload = multer()
 // express instance
 const app = express()
+app.use(cors())
 
 // forms relations between data tables, ran in here to avoid ordering issues
 connection.sync()
@@ -33,6 +37,11 @@ const server = new ApolloServer({
 // apply express to server instance
 server.applyMiddleware({ app })
 
+this.router = new Router()
+authMiddleware(this.router)
+
+app.post('/upload', this.router.access.user, upload.single('file'), imageUpload)
+
 // start server on localhost, port 4000
 app.listen({ 
   host: 'localhost',
@@ -40,17 +49,17 @@ app.listen({
   console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
 })
 
-/* const createAdmin = async () => {
-const { hashPassword } = require('./auth/util')
-let hash
-hash = await hashPassword('admin')
-models.User.create({
-  role: 'ADMIN',
-  email: 'noseelol.mc@gmail.com',
-  firstName: 'Matthew',
-  lastName: 'Cook',
-  passwordHash: hash
-})
-}
-createAdmin()
-*/
+// const createAdmin = async () => {
+//   const { hashPassword } = require('./middleware/util')
+//   let hash
+//   hash = await hashPassword('admin')
+//   models.User.create({
+//     role: 'ADMIN',
+//     email: 'noseelol.mc@gmail.com',
+//     firstName: 'Matthew',
+//     lastName: 'Cook',
+//     passwordHash: hash
+//   })
+//   }
+//   createAdmin()
+
