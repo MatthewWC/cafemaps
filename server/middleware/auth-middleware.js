@@ -12,7 +12,6 @@ function accessBuilder(role) {
     // if public resolver, skip auth
     if(role === 'PUBLIC') return next()
 
-    console.log('in accessbuilder')
     // get auth header
     const authHeader = req.header('Authorization')
 
@@ -40,7 +39,6 @@ function accessBuilder(role) {
       } 
       // if unsuccessful, throw to promise
       catch (error){
-        
         switch(error.message){
           case 'invalid signature':
             return next(new ForbiddenError) 
