@@ -1,0 +1,58 @@
+html{
+  height: 100%;
+}
+
+body{
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.myCSSClass {
+   all: revert;
+   fill-opacity: none;
+
+    color: green;
+    font-size:14px;
+    font-weight: 700;
+    background-color: none;
+    border-color: none;
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin: 0px;
+    cursor: none;
+    direction: 'center';
+    fill: false;
+}
+.leaflet-tooltip::before {
+  background: transparent;
+  border-left-color: transparent;
+  
+}
+
+.leaflet-tooltip-left.myCSSClass::before {
+  border-left-color: transparent;
+  background: transparent;
+  
+}
+.leaflet-tooltip-right.myCSSClass::before {
+  border-right-color: transparent;
+  background: transparent;
+}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+    position: absolute;
+    pointer-events: none;
+    border: 6px solid transparent;
+    background: transparent;
+    content: "";
+    }
+
