@@ -1,20 +1,37 @@
 const { UnknownError } = require('../errors')
+const { QueryTypes } = require('sequelize');
 
 module.exports = {
   Query: {
     getStore: async (_, args, context, info) => {
       // handle auth
-      await context.auth('USER')
+      await context.auth('PUBLIC')
       // return store
       return await context.models.Store.findOne({
         where: { id: args.id }
       })
+    },
+    getStores: async (_, args, context, info) => {
+      const radius = 0.36231884058
+      // handle auth
+      await context.auth('PUBLIC')
+      // find stores
+      const stores = await context.models.Store.findAll({
+        latitude: {
+          $between: [args.latitude + radius, args.latitude - radius]
+        }, 
+        longitude: {
+          $between: [args.longitude - radius, args.latitude + radius]
+        }
+      })
+      return stores
     }
   },
   Mutation: {
     createStore: async (_, args, context, info) => {
+
       // handle auth
-      context.auth('ADMIN')
+      await context.auth('ADMIN')
       const company = await context.models.Company.findOne({
         where: { companyName: args.companyName }
       })
@@ -24,9 +41,11 @@ module.exports = {
       }
       // create store
       return await context.models.Store.create({
-        email: args.email || company.dataValues.email,
-        storeName: args.storeName,
         companyId: company.dataValues.id,
+        latitude: args.latitude,
+        longitude: args.longitude,
+        storeName: args.storeName,
+        email: args.email || company.dataValues.email,
         imageUrl: args.imageUrl,
         addressOne: args.addressOne,
         addressTwo: args.addressTwo,
@@ -61,8 +80,10 @@ module.exports = {
       }
       // update store
       await store.update({
-        email: args.email || store.dataValues.email,
+        latitude: args.latitude || store.dataValues.latitude,
+        longitude: args.longitude || store.dataValues.longitude,
         storeName: args.storeName || store.dataValues.storeName,
+        email: args.email || store.dataValues.email,
         imageUrl: args.imageUrl || store.dataValues.imageUrl,
         addressOne: args.addressOne || store.dataValues.addressOne,
         addressTwo: args.addressTwo || store.dataValues.addressTwo,
@@ -88,7 +109,7 @@ module.exports = {
     },
     deleteStore: async (_, args, context, info) => {
       // handle auth
-      context.auth('ADMIN')
+      await context.auth('ADMIN')
       //get store
       const store = await context.models.Store.findOne({
         where: { id: args.id }
