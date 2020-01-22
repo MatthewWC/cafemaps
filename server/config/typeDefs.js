@@ -24,6 +24,8 @@ module.exports = gql`
   type Store {
     id: String,
     companyId: String!,
+    latitude: String!,
+    longitude: String!,
     storeName: String!,
     email: String!,
     imageUrl: String,
@@ -39,7 +41,7 @@ module.exports = gql`
     frHours: String,
     saHours: String,
     suHours: String,
-    rating: Float,
+    rating: String,
     wifi: Boolean!,
     bakery: Boolean!,
     milkAlt: Boolean!,
@@ -53,6 +55,7 @@ module.exports = gql`
     getUsers(firstName: String): [User!]
     getCompany(companyName: String, id: String): Company
     getStore(id: String!): Store!
+    getStores(longitude: String!, latitude: String!): [Store!]
   }
     
   type Mutation {
@@ -102,8 +105,10 @@ module.exports = gql`
 
     createStore(
       companyName: String!,
-      email: String,
+      latitude: Float!,
+      longitude: Float!,
       storeName: String!,
+      email: String,
       imageUrl: String,
       addressOne: String!,
       addressTwo: String,
@@ -117,7 +122,7 @@ module.exports = gql`
       frHours: String,
       saHours: String,
       suHours: String,
-      rating: Float,
+      rating: String,
       wifi: Boolean,
       bakery: Boolean,
       milkAlt: Boolean,
@@ -128,6 +133,8 @@ module.exports = gql`
     
     updateStore(
       id: String!,
+      latitude: String!,
+      longitude: String!,
       storeName: String,
       email: String,
       imageUrl: String,
@@ -143,7 +150,7 @@ module.exports = gql`
       frHours: String,
       saHours: String,
       suHours: String,
-      rating: Float,
+      rating: String,
       wifi: Boolean,
       bakery: Boolean,
       milkAlt: Boolean,
