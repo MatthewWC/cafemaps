@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: () => uuid()
     },
+    latitude: {
+      type: DataTypes.DECIMAL(9, 7)
+    },
+    longitude: {
+      type: DataTypes.DECIMAL(10, 7)
+    },
     storeName: {
       type: DataTypes.STRING
     },
@@ -57,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     rating: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.STRING,
       defaultValue: 5
     },
     wifi: {
