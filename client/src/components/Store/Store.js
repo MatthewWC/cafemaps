@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 // ---- material-ui imports ----
 import { makeStyles } from '@material-ui/core/styles'
-import { TableCell } from '@material-ui/core'
+import { TableCell, Typography } from '@material-ui/core'
 import TableContainer from '@material-ui/core/TableContainer'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 function Store(){
   // material-ui styles instance
   const classes = useStyles()
-  const { loading, error, data } = useQuery(GET_STORE, { variables: { id: 'd2338371-c21c-448d-9e52-975dcf4a9dc2' }})
+  const { loading, error, data } = useQuery(GET_STORE, { variables: { id: '750d76d3-3848-4653-b76d-44e5096a87a3' }})
 
   if(loading){
     return(
@@ -54,7 +54,6 @@ function Store(){
   }
 
   if(error){
-    console.log(error)
     return(
       <div className={classes.root}>
         <p>error</p>
@@ -71,13 +70,15 @@ function Store(){
     Saturday: data.getStore.saHours,
     Sunday: data.getStore.suHours
   }
-
+  console.log(data.getStore.imageUrl)
   return(
     <div className={classes.root}>
       <div className={classes.upper}>
         <div className={classes.upperLeft}>
-          <p>Future Image</p>
-          <p>{data.getStore.rating}</p>
+          <img src={data.getStore.imageUrl || 'profile_basic.png'}  alt='store' height='100px' width='100px'/>
+          <Typography>
+            Rating: {data.getStore.rating}
+          </Typography>
         </div>
         <div className={classes.upperRight}>
           <div className={classes.title}>
@@ -144,6 +145,7 @@ const GET_STORE = gql`
     getStore(id: $id){
       storeName
       email
+      imageUrl
       addressOne
       addressTwo
       city
