@@ -3,63 +3,67 @@
 import React, { useEffect } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import populateStores from './Markers/populateStores'
-import populateUsers from './Markers/populateUsers'
+import GeoLocationButton from './GeoLocationButton'
 // ---- material-ui imports ----
 import { makeStyles } from '@material-ui/core/styles'
+
 // -----------------------------
 
 // material-ui styles
 const useStyles = makeStyles(theme => ({
   root: {
-    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    flex: 1,
+    height: '100%'
+  },
+  mapContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1',
+    position: 'relative',
     overflow: 'hidden'
-
   },
   map: {
     position: 'absolute',
-    left: 0,
     right: 0,
+    left: 0,
     top: 0,
-    bottom: 0,
+    bottom: 0
   }
 }))
 
-function Map () {
+function Map (props) {
+  const map = React.createRef()
   // styles instance
   const classes = useStyles()
 
   // initialize map in componentDidMount equivalent function but for function comp
   useEffect(() => {
-    const map = L.map('map', {
+
+    map.current = new L.map('map', {
       // map starting spot
-      center: [34.357719, -84.040246],
+      center: [34.3577190, -84.04024600],
       zoom: 25,
       zoomControl: false
     }, [])
 
     // map tile design
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       detectRetina: true,
       maxZoom: 19,
-    }).addTo(map)
-
-    // markers
-    populateStores(map)
-    populateUsers(map)
-    
+    }).addTo(map.current)
   })
 
   // return map container
   return (
     <div className={classes.root}>
-      <div className={classes.map} id='map'/>
+      <div className={classes.mapContainer}>
+        <GeoLocationButton client={props.client} map={map}/>
+        <div 
+          className={classes.map} id='map'/>
+      </div>
     </div>
   )
-  
 }
 
 export default Map
