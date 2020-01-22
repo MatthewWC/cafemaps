@@ -1,10 +1,14 @@
 import React from 'react'
+
+// ---- material-ui imports ----
 import { makeStyles } from '@material-ui/core/styles'
 import Fab from '@material-ui/core/Fab'
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching'
-import buildUserMarker from '../../mapMarkers/buildUserMarker'
-import buildStoreMarker from '../../mapMarkers/buildStoreMarker'
+// -----------------------------
 
+import buildUserMarker from '../../mapMarkers/buildUserMarker'
+
+// material-ui styles
 const useStyles = makeStyles(theme => ({
   root: {
     padding: '20px',
@@ -24,13 +28,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function GeoLocationButton (props){
+  // material-ui styles instance
   const classes = useStyles()
+  // refs
   const geoButton = React.createRef()
 
+  // handle geobutton click
   async function handleClick(props){
     await buildUserMarker(props)
-    
-    //await buildStoreMarker(props)
   }
 
   return (
