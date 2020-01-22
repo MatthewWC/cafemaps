@@ -1,5 +1,6 @@
 const { UnknownError } = require('../errors')
-const { QueryTypes } = require('sequelize');
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 module.exports = {
   Query: {
@@ -17,12 +18,11 @@ module.exports = {
       await context.auth('PUBLIC')
       // find stores
       const stores = await context.models.Store.findAll({
-        latitude: {
-          $between: [args.latitude + radius, args.latitude - radius]
-        }, 
-        longitude: {
-          $between: [args.longitude - radius, args.latitude + radius]
-        }
+        where: {
+          [Op.and]: [
+            {longitude: {[Op.between]: [+args.longitude - +radius, +args.longitude + +radius]}},
+            {latitude: {[Op.between]: [+args.latitude - +radius, +args.latitude + +radius]}}]
+        },
       })
       return stores
     }
