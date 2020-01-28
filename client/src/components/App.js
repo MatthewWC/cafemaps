@@ -1,5 +1,9 @@
+import { Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
 import React from 'react'
+
+import { ApolloProvider } from 'react-apollo'
 import client from '../apolloClient.js'
+
 import Login from './Login'
 import Register from './Register'
 import Map from './Map'
@@ -7,18 +11,22 @@ import Header from './Header'
 import Profile from './Profile'
 import Store from './Store'
 import CreateStore from './Store/CreateStore'
-import { ApolloProvider } from 'react-apollo'
-import { Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
 import EditProfile from './Profile/EditProfile'
+import MapView from './MapView'
 
 //TODO: further secure admin endpoints with protected route  
+//TODO: fix conditional rendering with redirect "mapView" cant be accessed without login
 
 function App() {
+
   return(
     <ApolloProvider client={client}>
-      <BrowserRouter>
-       <Header/>
+      <BrowserRouter>     
         <Switch>
+          <Route 
+            exact path='/map_view'
+            render={props => <MapView {...props} client={client}/>}
+          />
           <Route
             exact path='/createStore'
             render={props => <CreateStore {...props} client={client}/>}
