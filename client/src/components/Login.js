@@ -1,7 +1,10 @@
 import React from 'react'
+
 import gql from 'graphql-tag'
+
 import validate from '../tools/validator'
-// ---- material-ui imports ----
+
+// ---- M-UI imports ----
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -9,12 +12,13 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import Typography from '@material-ui/core/Typography'
 import Link from "@material-ui/core/Link"
 import Divider from '@material-ui/core/Divider'
-// -----------------------------
+// ---- M-UI imports ----
 
 //TODO: add google sigin in
 //TODO: forgot password page & link
+//TODO: fix graphql error handling on query/mutation return
 
-// material ui styles
+// M-UI styles
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -54,11 +58,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Login (props){
+  // M-UI styles instance
+  const classes = useStyles()
+
+  // refs
   let loginForm = React.createRef()
   let errorText = React.createRef()
-
-  // styles instance
-  const classes = useStyles()
 
   // when button clicked
   async function handleSubmit(event, props){
