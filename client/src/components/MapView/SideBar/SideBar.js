@@ -1,33 +1,35 @@
 import React from 'react'
 
+import SearchBar from './SearchBar'
+import StoreInfo from './StoreInfo'
+
 // ---- M-UI imports ----
 import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 // ---- M-UI imports ----
-
-import SearchBar from './SearchBar/SearchBar'
-import StoreInfo from './StoreInfo'
 
 // M-UI styles 
 const useStyles = makeStyles(theme => ({
   sideBar: {
     width: '500px',
-    display: 'flex',
-    flexDirection: 'column',
+    maxHeight: '80%',
     zIndex: 999,
-    maxHeight: '95%'
+    margin: 5,
+    padding: 5
   }
 }))
+
 // adjust maxHeight ^ for storinfo fitting page
 
-function SideBar () {
+function SideBar (props) {
   // M-UI styles instance
   const classes = useStyles()
 
   return (
-    <div className={classes.sideBar}>
-      <SearchBar/>
+    <Grid container className={classes.sideBar}>
+      <SearchBar geolocationFunction={props.geolocationFunction}/>
       <StoreInfo/>
-    </div>
+    </Grid>
   )
 }
 
