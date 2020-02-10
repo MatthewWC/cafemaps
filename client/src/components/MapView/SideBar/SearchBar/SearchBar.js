@@ -5,31 +5,26 @@ import SearchInput from './SearchInput'
 
 // ---- M-UI imports ----
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 // ---- M-UI imports ----
 
 // M-UI styles
 const useStyles = makeStyles(theme => ({
   searchBarRoot: {
-    margin: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    padding: '10px',
-    borderRadius: 10,
-    margin: 5,
+    backgroundColor: '#CECECE',
+    padding: 5
   }
 }))
 
-function SearchBar () {
+function SearchBar (props) {
   // M-UI styles instance
   const classes = useStyles()
 
   return (
-    <Paper elevation={3} className={classes.searchBarRoot}>
-      <GeoLocationButton/>
+    <Grid container wrap='nowrap' className={classes.searchBarRoot} >
+      <GeoLocationButton geolocationFunction={props.geolocationFunction}/>
       <SearchInput/>
-    </Paper>
+    </Grid>
   )
 }
 
