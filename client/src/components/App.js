@@ -6,11 +6,8 @@ import client from '../apolloClient.js'
 
 import Login from './Login'
 import Register from './Register'
-import Map from './Map'
-import Header from './Header'
+//import Header from './Header'
 import Profile from './Profile'
-import Store from './Store'
-import CreateStore from './Store/CreateStore'
 import EditProfile from './Profile/EditProfile'
 import MapView from './MapView'
 
@@ -24,20 +21,8 @@ function App() {
       <BrowserRouter>     
         <Switch>
           <Route 
-            exact path='/map_view'
-            render={props => <MapView {...props} client={client}/>}
-          />
-          <Route
-            exact path='/createStore'
-            render={props => <CreateStore {...props} client={client}/>}
-          />
-          <Route
-            exact path='/store'
-            render={props => <Store {...props} client={client}/>}
-          />
-          <Route
             exact path='/'
-            render={props => <Map {...props} client={client}/>}
+            render={props => <MapView {...props} client={client}/>}
           />
           <Route 
             exact path='/register'
