@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import L from 'leaflet'
 
@@ -13,32 +13,46 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     left: 0,
     top: 0,
-    bottom: 0
+    bottom: 0,
+    overflow: 'hidden'
   }
 }))
 
-function Map () {
+function Map ({ userCoords }) {
   // M-UI styles instance
   const classes = useStyles()
-  // refs
-  const map = React.createRef()
-
+  //TODO: if user rendered, get stores. attach data to marker? requery? 
+  const mapRef = useRef(null)
   // initialize map in componentDidMount equivalent function but for function comp
   useEffect(() => {
-
-    map.current = new L.map('map', {
+    // fix for map rerendering, might be temporary fix
+    mapRef.current = L.map('map', {
       // map starting spot
-      center: [34.3577190, -84.04024600],
+      center: [49.8419, 24.0315],
       zoom: 25,
-      zoomControl: false
-    }, [])
+      zoomControl: false,
+      layers: [
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          detectRetina: true,
+          maxZoom: 19,
+        })
+      ]
+    }, [])  
+  }, [])
 
-    // map tile design
-    new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      detectRetina: true,
-      maxZoom: 19,
-    }).addTo(map.current)
-  })
+  // add marker
+  const markerRef = useRef(null);
+  useEffect(() => {
+    if(userCoords){
+      if (markerRef.current) {
+        markerRef.current.setLatLng(userCoords);
+      } else {
+        markerRef.current = L.marker(userCoords).addTo(mapRef.current);
+      }
+    }
+  },
+    [userCoords]
+  )
 
   // return map container
   return (
