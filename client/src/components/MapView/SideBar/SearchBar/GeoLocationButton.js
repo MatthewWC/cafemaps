@@ -12,7 +12,9 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '50px',
     minWidth: '50px',
     minHeight: '50px',
-    marginTop: '3px'
+    marginTop: '3px',
+    backgroundColor: '#B36D17',
+    color: '#54C6FF'
   }
 }))
 
@@ -22,8 +24,17 @@ function GeoLocationButton (props){
   // refs
   const geoButton = React.createRef()
 
+  // when geolocate clicked
+  function handleClick (props) {
+    // trigger geolocate
+    props.geolocationFunction()
+  }
+
   return (
     <Fab
+      onClick={() => {
+        handleClick(props)
+      }}
       ref={geoButton}
       variant='extended'
       className={classes.buttonRoot}>
