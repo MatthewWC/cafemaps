@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Hours () {
+function Hours ({moHours, tuHours, weHours, thHours, frHours, saHours, suHours}) {
   // M-UI styles instance
   const classes = useStyles()
 
@@ -44,13 +44,13 @@ function Hours () {
 
   // temporary Hours of Op Array
   const week = {
-    1: 'Mon: 7am-7pm',
-    2: 'Tue: 7am-7pm',
-    3: 'Wed: 7am-7pm',
-    4: 'Thu: 7am-7pm',
-    5: 'Fri: 7am-7pm',
-    6: 'Sat: 8am-3pm',
-    7: 'Sun: CLOSED'
+    1: moHours,
+    2: tuHours,
+    3: weHours,
+    4: thHours,
+    5: frHours,
+    6: saHours,
+    7: suHours
   } 
 
   return (
