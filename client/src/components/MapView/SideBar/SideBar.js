@@ -28,7 +28,7 @@ function SideBar (props) {
   return (
     <Grid container className={classes.sideBar}>
       <SearchBar geolocationFunction={props.geolocationFunction}/>
-      <StoreInfo/>
+      <StoreInfo storeInfo={props.storeInfo}/>
     </Grid>
   )
 }
