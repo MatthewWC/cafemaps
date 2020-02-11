@@ -50,21 +50,58 @@ const useStyles = makeStyles(theme => ({
 }))
 
 //TODO: add contribute to icon images 
-function StoreInfo () {
+function StoreInfo ({ storeInfo }) {
   // M-UI styles instance
   const classes = useStyles()
-
-  return (
-    <Grid container className={classes.storeInfoRoot}>
-      <Avatar className={classes.imageContainer} src='' alt='store'/>
-      <Typography className={classes.title} variant='h4'>Because Coffee</Typography>
-      <Grid container wrap='nowrap' justify='space-between' direction='column' className={classes.topGrid}>
-      <Features/>
-      <Address/>
-      <Hours/>
+  console.log(storeInfo)
+  if(storeInfo){
+    return (
+      <Grid container className={classes.storeInfoRoot}>
+        <Avatar 
+          className={classes.imageContainer} 
+          src={storeInfo.imageUrl || ''} 
+          alt='store'/>
+        <Typography 
+          className={classes.title} 
+          variant='h4'>{storeInfo.storeName}
+        </Typography>
+        <Grid container
+          className={classes.topGrid} 
+          wrap='nowrap' 
+          justify='space-between' 
+          direction='column' 
+        >
+        <Features 
+          wifi={storeInfo.wifi} 
+          bakery={storeInfo.bakery} 
+          milkAlt={storeInfo.milkAlt} 
+          indoorSeating={storeInfo.indoorSeating} 
+          driveThru={storeInfo.driveThru}/>
+        <Address 
+          addressOne={storeInfo.addressOne} 
+          addressTwo={storeInfo.addressTwo} 
+          city={storeInfo.city}
+          state={storeInfo.state} 
+          zipcode={storeInfo.zipcode}/>
+        <Hours
+          moHours={storeInfo.moHours}
+          tuHours={storeInfo.tuHours}
+          weHours={storeInfo.weHours}
+          thHours={storeInfo.thHours}
+          frHours={storeInfo.frHours}
+          saHours={storeInfo.saHours}
+          suHours={storeInfo.suHours}
+        />
+        </Grid>
       </Grid>
-    </Grid>
-  )
+    )
+  }
+  else{
+    //TODO: ellaborate 
+    return(
+      <div></div>
+    )
+  }
 }
 // <Rating value={5} readOnly/>
 export default StoreInfo
