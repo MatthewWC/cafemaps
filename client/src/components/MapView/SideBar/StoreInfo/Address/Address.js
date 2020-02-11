@@ -19,14 +19,14 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Address () {
+function Address ({ addressOne, addressTwo, city, state, zipcode }) {
   // M-UI styles instance
   const classes = useStyles()
-
+  console.log(addressOne)
   return (
     <Grid  className={classes.addressRoot} container direction='column' >
       <Typography className={classes.header}>Address</Typography>
-      <Typography className={classes.address}>240 Dawson Village Way N Suite #100, Dawsonville, GA 30534</Typography>
+      <Typography className={classes.address}>{`${addressOne}, ${addressTwo} ${city} ${state}, ${zipcode}`}</Typography>
     </Grid>
   )
 }
