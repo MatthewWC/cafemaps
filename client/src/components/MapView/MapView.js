@@ -17,11 +17,19 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function MapView () {
+function MapView (props) {
   // M-UI styles instance
   const classes = useStyles()
   // init user cords
   const [ userCoords, setUserCoords ] = React.useState(null)
+  const [ storeInfo, setStoreInfo ] = React.useState(null)
+
+  //store info function on marker click
+  function onStoreMarkerClicked(store){
+    console.log('clicked')
+    console.log(store)
+    setStoreInfo(store)
+  }
 
   function handleGeolocate (){
     // if geolocate fails
@@ -43,8 +51,8 @@ function MapView () {
 
   return (
     <div className={classes.mapViewRoot}>
-      <Map userCoords={userCoords}/>
-      <SideBar geolocationFunction={handleGeolocate}/>
+      <Map onStoreMarkerClicked={onStoreMarkerClicked} client={props.client} userCoords={userCoords}/>
+      <SideBar storeInfo={storeInfo} geolocationFunction={handleGeolocate}/>
     </div>
   )
 }
