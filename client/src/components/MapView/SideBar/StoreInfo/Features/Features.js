@@ -39,10 +39,10 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Features () {
+function Features ({wifi, bakery, milkAlt, indoorSeating, driveThru}) {
   // M-UI styles instance
   const classes = useStyles()
-
+  //TODO: build conditonal render based off true false props
   return (
       <Grid container className={classes.featuresRoot} direction='column' alignItems='center'>
         <FeaturesButton/>
