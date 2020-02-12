@@ -86,6 +86,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    roastery: {
+      type: DataTypes.BOOLEAN,
+      defaultVaue: false
+    },
     clubCard: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
