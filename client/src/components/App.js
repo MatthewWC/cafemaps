@@ -10,12 +10,13 @@ import Register from './Register'
 import Profile from './Profile'
 import EditProfile from './Profile/EditProfile'
 import MapView from './MapView'
+import Admin from './Admin/Admin'
 
 //TODO: further secure admin endpoints with protected route  
 //TODO: fix conditional rendering with redirect "mapView" cant be accessed without login
 
 function App() {
-
+  
   return(
     <ApolloProvider client={client}>
       <BrowserRouter>     
@@ -34,7 +35,13 @@ function App() {
             render={props => localStorage.getItem('token') ? 
              (<Redirect to={{ pathname: '/'}}/>) : (<Login {...props} client={client}/>)}
           />
-          <ProtectedRoute>
+          <ProtectedAdminRoute>
+            <Route
+              exact path='/admin'
+              render={props => <Admin {...props} client={client}/>}
+            />
+          </ProtectedAdminRoute>
+          <ProtectedUserRoute>
             <Route 
               exact path='/profile'
               render={props => <Profile {...props} client={client}/>}
@@ -43,7 +50,7 @@ function App() {
               exact path='/edit_profile'
               render={props => <EditProfile {...props} client={client}/>}
             />
-          </ProtectedRoute>
+          </ProtectedUserRoute>
         </Switch>
       </BrowserRouter>
     </ApolloProvider>
@@ -51,7 +58,7 @@ function App() {
 }
 
 // handle logged out
-function ProtectedRoute({
+function ProtectedUserRoute({
   children,
   ...props
 }){
@@ -59,6 +66,19 @@ function ProtectedRoute({
     <Route render={props => {
       return(
         localStorage.getItem('token') ? (children) : (<Redirect to={{ pathname: '/login'}}/>)
+      )
+    }}/>
+  )
+}
+
+function ProtectedAdminRoute({
+  children,
+  ...props
+}){
+  return(
+    <Route render={props => {
+      return(
+        localStorage.getItem('role') === 'ADMIN' ? (children) : (<Redirect to={{ pathname: '/'}}/>)
       )
     }}/>
   )
