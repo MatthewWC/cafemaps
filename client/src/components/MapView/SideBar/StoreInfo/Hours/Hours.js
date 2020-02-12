@@ -4,7 +4,11 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import List from '@material-ui/core/List'
+import Table from '@material-ui/core/Table/'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableRow from '@material-ui/core/TableRow'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -26,7 +30,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column'
   },
   button: {
-    width: '50%',
   }
 }))
 
@@ -42,32 +45,60 @@ function Hours ({moHours, tuHours, weHours, thHours, frHours, saHours, suHours})
     setOpen(!open);
   };
 
-  // temporary Hours of Op Array
-  const week = {
-    1: moHours,
-    2: tuHours,
-    3: weHours,
-    4: thHours,
-    5: frHours,
-    6: saHours,
-    7: suHours
-  } 
+  function createRow(key, day, hours){
+    return { key, day, hours }
+  }
 
+  const rows = [
+    createRow(1, 'Monday', moHours),
+    createRow(2, 'Tuesday', tuHours),
+    createRow(3, 'Wednesday', weHours),
+    createRow(4, 'Thursday', thHours),
+    createRow(5, 'Friday', frHours),
+    createRow(6, 'Saturday', saHours),
+    createRow(7, 'Sunday', suHours)
+  ]
+
+  // header for hours drop down
+  function getTodaysDate(){
+    let today
+    const todaysDate = new Date()
+    rows.map(row => {
+      if(row.key === todaysDate.getDay()){
+        today = `${row.day}: ${row.hours}`
+        return today
+      }
+      return today
+    })
+    return today
+  }
+  console.log(getTodaysDate())
   return (
     <Grid container direction='column' className={classes.hoursRoot}>
       <Typography>Hours</Typography>
       <ListItem button className={classes.button} onClick={handleClick}>
-        <ListItemText primary={'Hours of Operation'}/>
+        <ListItemText primary={getTodaysDate()}/>
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItem button className={classes.hours}>
-            {Object.keys(week).map(day => {
-              return <ListItem key={day}>{week[day]}</ListItem>
-            })}
-          </ListItem>
-        </List>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              {
+                rows.map(row => (
+                  <TableRow key={row.day}>
+                    <TableCell>
+                      {row.day}
+                    </TableCell>
+                    <TableCell>
+                      {row.hours}
+                    </TableCell>
+                  </TableRow>
+                ))
+              }
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Collapse>
     </Grid>
   )
