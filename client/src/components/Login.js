@@ -79,6 +79,7 @@ function Login (props){
               login(email: $email, password: $password){
                 user{
                   email
+                  role
                 }
                 token
               }
@@ -89,8 +90,9 @@ function Login (props){
           }
         })
     // successful response
-    await localStorage.setItem('token', results.data.login.token)
-    await localStorage.setItem('email', results.data.login.user.email)
+    localStorage.setItem('token', results.data.login.token)
+    localStorage.setItem('email', results.data.login.user.email)
+    localStorage.setItem('role', results.data.login.user.role)
     props.history.push('/')
     } 
     catch(err){
