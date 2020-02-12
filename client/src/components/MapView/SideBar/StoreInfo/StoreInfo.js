@@ -76,7 +76,8 @@ function StoreInfo ({ storeInfo }) {
           bakery={storeInfo.bakery} 
           milkAlt={storeInfo.milkAlt} 
           indoorSeating={storeInfo.indoorSeating} 
-          driveThru={storeInfo.driveThru}/>
+          driveThru={storeInfo.driveThru}
+          roastery={storeInfo.roastery}/>
         <Address 
           addressOne={storeInfo.addressOne} 
           addressTwo={storeInfo.addressTwo} 
