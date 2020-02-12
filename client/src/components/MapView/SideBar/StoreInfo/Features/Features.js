@@ -31,28 +31,34 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center'
   },
-  icon: {
+  iconTrue: {
     height: '20px',
     width: '20px',
     margin: 5,
-    color: '#54C6FF'// #CECECE for grey
+    color: '#54C6FF' // blue
+  },
+  iconFalse: {
+    height: '20px',
+    width: '20px',
+    margin: 5,
+    color: '#CECECE' // grey
   }
 }))
 
-function Features ({wifi, bakery, milkAlt, indoorSeating, driveThru}) {
+function Features ({wifi, bakery, milkAlt, indoorSeating, driveThru, roastery}) {
   // M-UI styles instance
   const classes = useStyles()
-  //TODO: build conditonal render based off true false props
+
   return (
       <Grid container className={classes.featuresRoot} direction='column' alignItems='center'>
         <FeaturesButton/>
         <Paper className={classes.iconContainer}>
-          <CoffeeBeanIcon className={classes.icon} viewBox={'0 0 326.05 326.05'}/>
-          <WifiIcon className={classes.icon} viewBox={'0 0 493.746 493.746'}/>
-          <IndoorSeatingIcon className={classes.icon} viewBox={'0 0 209.268 209.268'}/>
-          <VeganLeafIcon className={classes.icon} viewBox={'0 0 469.333 469.333'}/>
-          <DriveThruIcon className={classes.icon} viewBox={'0 0 447.645 447.645'}/>
-          <BakeryIcon className={classes.icon} viewBox={'0 0 511.999 511.999'}/>
+          <WifiIcon className={wifi ? classes.iconTrue: classes.iconFalse} viewBox={'0 0 493.746 493.746'}/>
+          <BakeryIcon className={bakery ? classes.iconTrue: classes.iconFalse} viewBox={'0 0 511.999 511.999'}/>
+          <VeganLeafIcon className={milkAlt ? classes.iconTrue: classes.iconFalse} viewBox={'0 0 469.333 469.333'}/>
+          <IndoorSeatingIcon className={indoorSeating ? classes.iconTrue: classes.iconFalse} viewBox={'0 0 209.268 209.268'}/>
+          <DriveThruIcon className={driveThru ? classes.iconTrue: classes.iconFalse} viewBox={'0 0 447.645 447.645'}/>
+          <CoffeeBeanIcon className={roastery ? classes.iconTrue: classes.iconFalse} viewBox={'0 0 326.05 326.05'}/>
         </Paper>
       </Grid>
   )
