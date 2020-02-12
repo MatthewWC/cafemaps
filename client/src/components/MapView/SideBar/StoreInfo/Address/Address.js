@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 function Address ({ addressOne, addressTwo, city, state, zipcode }) {
   // M-UI styles instance
   const classes = useStyles()
-  console.log(addressOne)
+
   return (
     <Grid  className={classes.addressRoot} container direction='column' >
       <Typography className={classes.header}>Address</Typography>
