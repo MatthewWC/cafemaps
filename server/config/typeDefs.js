@@ -34,19 +34,20 @@ module.exports = gql`
     city: String!,
     state: String!,
     zipcode: Float!,
-    moHours: String,
-    tuHours: String,
-    weHours: String,
-    thHours: String,
-    frHours: String,
-    saHours: String,
-    suHours: String,
+    moHours: String!,
+    tuHours: String!,
+    weHours: String!,
+    thHours: String!,
+    frHours: String!,
+    saHours: String!,
+    suHours: String!,
     rating: String,
     wifi: Boolean!,
     bakery: Boolean!,
     milkAlt: Boolean!,
     indoorSeating: Boolean!,
     driveThru: Boolean!,
+    roastery: Boolean!,
     clubCard: Boolean!
   }
     
@@ -115,19 +116,20 @@ module.exports = gql`
       city: String!,
       state: String!,
       zipcode: String!,
-      moHours: String,
-      tuHours: String,
-      weHours: String,
-      thHours: String,
-      frHours: String,
-      saHours: String,
-      suHours: String,
+      moHours: String!,
+      tuHours: String!,
+      weHours: String!,
+      thHours: String!,
+      frHours: String!,
+      saHours: String!,
+      suHours: String!,
       rating: String,
       wifi: Boolean,
       bakery: Boolean,
       milkAlt: Boolean,
       indoorSeating: Boolean,
       driveThru: Boolean,
+      roastery: Boolean,
       clubCard: Boolean
     ): Store!
     
@@ -156,6 +158,7 @@ module.exports = gql`
       milkAlt: Boolean,
       indoorSeating: Boolean,
       driveThru: Boolean,
+      roastery: Boolean,
       clubCard: Boolean
     ): Store!
 
