@@ -132,5 +132,6 @@ const GET_STORES = gql`
       milkAlt
       indoorSeating
       driveThru
+      roastery
     }
   }`
