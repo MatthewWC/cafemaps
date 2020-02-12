@@ -1,3 +1,5 @@
+// https://pontaku-tools.com/english/ great tool for sequelize
+
 const { UnknownError } = require('../errors')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
@@ -65,6 +67,7 @@ module.exports = {
         milkAlt: args.milkAlt,
         indoorSeating: args.indoorSeating,
         driveThru: args.driveThru,
+        roastery: args.roastery,
         clubCard: args.clubCard
       })
     },
@@ -103,6 +106,7 @@ module.exports = {
         milkAlt: args.milkAlt || store.dataValues.milkAlt,
         indoorSeating: args.indoorSeating || store.dataValues.indoorSeating,
         driveThru: args.driveThru || store.dataValues.driveThru,
+        roastery: args.roastery || store.dataValues.driveThru,
         clubCard: args.clubCard || store.dataValues.clubCard
       })
       return store
