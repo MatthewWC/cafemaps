@@ -2,6 +2,7 @@ import React from 'react'
 
 import Map from './Map'
 import SideBar from './SideBar/SideBar'
+import ReportButton from './ReportButton'
 //TODO: import user button
 
 // ---- M-UI imports ----
@@ -26,8 +27,6 @@ function MapView (props) {
 
   //store info function on marker click
   function onStoreMarkerClicked(store){
-    console.log('clicked')
-    console.log(store)
     setStoreInfo(store)
   }
 
@@ -53,6 +52,7 @@ function MapView (props) {
     <div className={classes.mapViewRoot}>
       <Map onStoreMarkerClicked={onStoreMarkerClicked} client={props.client} userCoords={userCoords}/>
       <SideBar storeInfo={storeInfo} geolocationFunction={handleGeolocate}/>
+      <ReportButton/>
     </div>
   )
 }
