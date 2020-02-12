@@ -8,7 +8,12 @@ module.exports = {
   Query: {
     getUser: async (_, args, context, info) => {
       // handle auth
-      await context.auth('USER')
+      try{
+        await context.auth('USER')
+      }
+      catch (error){
+        await context.auth('ADMIN')
+      }
       // return user associated with token
       return context.req.user
     },
