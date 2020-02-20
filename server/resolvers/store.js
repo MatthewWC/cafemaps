@@ -48,7 +48,7 @@ module.exports = {
         longitude: args.longitude,
         storeName: args.storeName,
         email: args.email || company.dataValues.email,
-        imageUrl: args.imageUrl,
+        imageUrl: args.imageUrl || company.dataValues.imageUrl,
         addressOne: args.addressOne,
         addressTwo: args.addressTwo,
         city: args.city,
