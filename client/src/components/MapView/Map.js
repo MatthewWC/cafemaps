@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import gql from 'graphql-tag'
 import L from 'leaflet'
+import 'leaflet-routing-machine'
 
 // ---- M-UI imports ----
 import { makeStyles } from '@material-ui/core/styles'
@@ -84,13 +85,20 @@ function Map ({ client, userCoords, onStoreMarkerClicked }) {
       getStores(client).then(stores => {
         
         // map stores
-        //TODO: show/hide storeinfo, maybe center map on marker
+        //TODO: show/hide storeinfo
         stores.data.getStores.map(store => {
           // build markers
           return L.marker([store.latitude, store.longitude])
             .addTo(mapRef.current)
             .bindTooltip(store.storeName, { className: 'myCSSClass', permanent: true})
             .on('click', () => {
+              L.Routing.control({
+                waypoints: [
+                    L.latLng([userCoords.lat, userCoords.lng]),
+                    L.latLng([store.latitude, store.longitude])
+                ],
+                routeWhileDragging: true
+              }).addTo(mapRef.current)
               mapRef.current.flyTo([store.latitude, store.longitude])
               onStoreMarkerClicked(store)
             })
