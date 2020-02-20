@@ -36,6 +36,7 @@ module.exports = {
       return await context.models.Company.create({
         companyName: args.companyName,
         email: args.email,
+        imageUrl:  args.ImageUrl,
         addressOne: args.addressOne || '',
         addressTwo: args.addressTwo || '',
         city: args.city || '',
@@ -57,6 +58,7 @@ module.exports = {
       // update company
       return await company.update({
         email: args.email || company.dataValues.email,
+        imageUrl: args.imageUrl || company.dataValues.imageUrl,
         addressOne: args.addressOne || company.dataValues.addressOne,
         addressTwo: args.addressTwo || company.dataValues.addressTwo,
         city: args.city || company.dataValues.city,
