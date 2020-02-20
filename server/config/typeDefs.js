@@ -14,6 +14,7 @@ module.exports = gql`
     id: String,
     companyName: String!,
     email: String!,
+    imageUrl: String!,
     addressOne: String,
     addressTwo: String,
     city: String,
@@ -83,6 +84,7 @@ module.exports = gql`
     createCompany(
       companyName: String!,
       email: String,
+      imageUrl: String,
       addressOne: String,
       addressTwo: String,
       city: String,
