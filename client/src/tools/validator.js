@@ -41,6 +41,16 @@ const validate = (form) => {
         throw new Error('Passwords do not match.')
       }
       break
+    case 'createStoreForm':
+      // check for empty fields
+      Object.keys(formFields).forEach(function (item){
+        if(formFields[item].type === 'text'){
+          if(validator.isEmpty(formFields[item].value)){
+            throw new Error('Fields cannot be empty')
+          }
+        }
+      })
+      break
     default:
       // if user somehow changed form name
       throw new Error('Something bad happened. Contact support.') 
