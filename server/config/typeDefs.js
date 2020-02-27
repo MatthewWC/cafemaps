@@ -10,54 +10,32 @@ module.exports = gql`
     email: String!
   }
 
-  type Company {
-    id: String,
-    companyName: String!,
-    email: String!,
-    imageUrl: String!,
-    addressOne: String,
-    addressTwo: String,
-    city: String,
-    state: String,
-    zipcode: String,
-  }
-
   type Store {
     id: String,
-    companyId: String!,
+    storeName: String!,
     latitude: String!,
     longitude: String!,
-    storeName: String!,
-    email: String!,
-    imageUrl: String,
     addressOne: String!,
-    addressTwo: String,
-    city: String!,
-    state: String!,
-    zipcode: Float!,
-    moHours: String!,
-    tuHours: String!,
-    weHours: String!,
-    thHours: String!,
-    frHours: String!,
-    saHours: String!,
-    suHours: String!,
-    rating: String,
-    wifi: Boolean!,
-    bakery: Boolean!,
-    milkAlt: Boolean!,
-    indoorSeating: Boolean!,
-    driveThru: Boolean!,
-    roastery: Boolean!,
-    clubCard: Boolean!
+    phoneNumber: String!,
+    email: String!,
+    imageUrl: String!,
   }
-    
+
+  type Coffee {
+    id: String!,
+    storeId: String!,
+    coffeeName: String!,
+    imageUrl: String!,
+    description: String!
+  }
+
   type Query {
     getUser(email: String): User!
     getUsers(firstName: String): [User!]
-    getCompany(companyName: String, id: String): Company
-    getStore(id: String!): Store!
-    getStores(longitude: String!, latitude: String!): [Store!]
+    getStore(id: String, storeName: String): Store!
+    getStores: [Store!]
+    getCoffee(id: String!): Coffee!
+    getCoffees(storeId: String!): [Coffee!]
   }
     
   type Mutation {
@@ -81,92 +59,46 @@ module.exports = gql`
 
     deleteUser(password: String!): User
 
-    createCompany(
-      companyName: String!,
-      email: String,
-      imageUrl: String,
-      addressOne: String,
-      addressTwo: String,
-      city: String,
-      state: String,
-      zipcode: String
-    ): Company!
-
-    updateCompany(
-      companyName: String!,
-      email: String,
-      addressOne: String,
-      addressTwo: String,
-      city: String,
-      state: String,
-      zipcode: String
-    ): Company!
-
-    deleteCompany(
-      companyName: String!
-    ): Company
-
     createStore(
-      companyName: String!,
-      latitude: Float!,
-      longitude: Float!,
       storeName: String!,
-      email: String,
-      imageUrl: String,
+      latitude: Float!,
+      longitude: Float,
       addressOne: String!,
-      addressTwo: String,
-      city: String!,
-      state: String!,
-      zipcode: String!,
-      moHours: String!,
-      tuHours: String!,
-      weHours: String!,
-      thHours: String!,
-      frHours: String!,
-      saHours: String!,
-      suHours: String!,
-      rating: String,
-      wifi: Boolean,
-      bakery: Boolean,
-      milkAlt: Boolean,
-      indoorSeating: Boolean,
-      driveThru: Boolean,
-      roastery: Boolean,
-      clubCard: Boolean
+      phoneNumber: String!,
+      email: String!,
+      imageUrl: String!,
     ): Store!
     
     updateStore(
-      id: String!,
-      latitude: String!,
-      longitude: String!,
-      storeName: String,
+      storeName: String!,
+      latitude: Float,
+      longitude: Float,
+      addressOne: String,
+      phoneNumber: String,
       email: String,
       imageUrl: String,
-      addressOne: String,
-      addressTwo: String,
-      city: String,
-      state: String,
-      zipcode: String,
-      moHours: String,
-      tuHours: String,
-      weHours: String,
-      thHours: String,
-      frHours: String,
-      saHours: String,
-      suHours: String,
-      rating: String,
-      wifi: Boolean,
-      bakery: Boolean,
-      milkAlt: Boolean,
-      indoorSeating: Boolean,
-      driveThru: Boolean,
-      roastery: Boolean,
-      clubCard: Boolean
     ): Store!
 
     deleteStore(
       id: String!,
-    ): Store
+    ): Store!
+
+    createCoffee(
+      storeName: String!,
+      coffeeName: String!,
+      imageUrl: String!,
+      description: String! 
+    ): Coffee!
+
+    updateCoffee(
+      coffeeName: String!,
+      imageUrl: String,
+      description: String,
+    ): Coffee!
+
+    deleteCoffee(
+      id: String!
+    ): Coffee!
   }
 
   type LoginResponse {
