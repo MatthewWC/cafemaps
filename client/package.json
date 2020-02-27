@@ -4,7 +4,10 @@
   "description": "cafemaps client",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -41,6 +44,9 @@
     "react-scripts": "^3.3.0",
     "styled-components": "^4.4.1",
     "validator": "^12.1.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
