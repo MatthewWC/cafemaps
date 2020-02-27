@@ -52,4 +52,4 @@ jspm_packages/
 .terraform
 
 #Admin logic
-client/components/Admin
+client/src/components/Admin
