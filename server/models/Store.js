@@ -1,8 +1,5 @@
 const { uuid }= require('uuidv4')
 
-// apple pay
-// samsung pay
-
 module.exports = (sequelize, DataTypes) => {
   const Store = sequelize.define('Store', {
     id: {
@@ -11,13 +8,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: () => uuid()
     },
+    storeName: {
+      type: DataTypes.STRING
+    },
     latitude: {
       type: DataTypes.DECIMAL(9, 7)
     },
     longitude: {
       type: DataTypes.DECIMAL(10, 7)
     },
-    storeName: {
+    addressOne: {
+      type: DataTypes.STRING
+    },
+    phoneNumber: {
       type: DataTypes.STRING
     },
     email: {
@@ -25,74 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     imageUrl: {
       type: DataTypes.STRING
-    },
-    addressOne: {
-      type: DataTypes.STRING
-    },
-    addressTwo: {
-      type: DataTypes.STRING
-    },
-    city: {
-      type: DataTypes.STRING
-    },
-    state: {
-      type: DataTypes.STRING
-    },
-    zipcode: {
-      type: DataTypes.STRING(5)
-    },
-    moHours: {
-      type: DataTypes.STRING
-    },
-    tuHours: {
-      type: DataTypes.STRING
-    },
-    weHours: {
-      type: DataTypes.STRING
-    },
-    thHours: {
-      type: DataTypes.STRING
-    },
-    frHours: {
-      type: DataTypes.STRING
-    },
-    saHours: {
-      type: DataTypes.STRING
-    },
-    suHours: {
-      type: DataTypes.STRING
-    },
-    rating: {
-      type: DataTypes.STRING,
-      defaultValue: 5
-    },
-    wifi: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    bakery: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    milkAlt: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    indoorSeating: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    driveThru: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    roastery: {
-      type: DataTypes.BOOLEAN,
-      defaultVaue: false
-    },
-    clubCard: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -104,13 +39,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
 
-  // Store.associate = (models) => {
-  //   Store.belongsTo(models.Company, {
-  //     foreignId: 'companyId'
-  //   })
-  // }
+  Store.associate = (models) => {
+    Store.hasMany(models.Coffee, {
+      foreignKey: 'storeId'
+    })
+  }
 
-  Store.order = 0
+  Store.order = 1
 
   return Store
 }
