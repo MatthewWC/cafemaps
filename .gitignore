@@ -50,6 +50,3 @@ jspm_packages/
 
 # Terraform build data
 .terraform
-
-#Admin logic
-client/src/components/Admin
