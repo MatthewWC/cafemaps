@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import gql from 'graphql-tag'
 import L from 'leaflet'
 import 'leaflet-routing-machine'
@@ -19,23 +19,19 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Map ({ client, userCoords, onStoreMarkerClicked }) {
-  
+function Map ({ client, onStoreMarkerClicked }) {
+
   // M-UI styles instance
   const classes = useStyles()
-  //TODO: if user rendered, get stores. attach data to marker? requery? 
-  const mapRef = useRef(null)
-  const userMarkerRef = useRef(null)
-  // initialize map in componentDidMount equivalent function but for function comp
+  
+  //ref
+  const mapRef = React.createRef()
+  
   useEffect(() => {
-    // get user ip
-    async function ipLookUp () {
+    async function initMap(){
       const response = await fetch('http://ip-api.com/json')
-      return await response.json()
-    }
-
-    ipLookUp().then((data) => {
-      // fix for map rerendering, might be temporary fix
+      const data = await response.json()
+      
       mapRef.current = L.map('map', {
         // map starting spot
         center: [data.lat, data.lon],
@@ -47,67 +43,24 @@ function Map ({ client, userCoords, onStoreMarkerClicked }) {
             maxZoom: 19,
           })
         ]
-      }, [])  
-    })
-  }, [])
-
-  // add user marker
-  useEffect(() => {
-    // if user allows geolocation
-    if(userCoords){
-      // move map center to user
-      mapRef.current.flyTo(userCoords, 14.5)
-      if (userMarkerRef.current) {
-        // if user marker does exist, set new lat/lng
-        userMarkerRef.current.setLatLng(userCoords);
-      } else {
-        // if user marker doesnt exist, build it
-        userMarkerRef.current = L.marker(userCoords).addTo(mapRef.current)
-      }
+      }, []) 
     }
-  }, [userCoords])
-
-  // add store markers
-  useEffect(() => {
-    if(userCoords){
-      // get stores function
-      async function getStores(client){
-        return await client.query({
-          query: GET_STORES,
-          variables: {
-            latitude: userCoords.lat.toString(),
-            longitude: userCoords.lng.toString()
-          }
-        })
-      }
-      // get stores
-      //TODO: if stores are out of new user range, remove the markers.
-      getStores(client).then(stores => {
-        
-        // map stores
-        //TODO: show/hide storeinfo
-        stores.data.getStores.map(store => {
-          // build markers
-          return L.marker([store.latitude, store.longitude])
+    initMap().then(async () => {
+      const stores = await client.query({query: GET_STORES})
+      stores.data.getStores.map(store => {
+        return L.marker([store.latitude, store.longitude])
             .addTo(mapRef.current)
             .bindTooltip(store.storeName, { className: 'myCSSClass', permanent: true})
             .on('click', () => {
-              L.Routing.control({
-                waypoints: [
-                    L.latLng([userCoords.lat, userCoords.lng]),
-                    L.latLng([store.latitude, store.longitude])
-                ],
-                routeWhileDragging: true
-              }).addTo(mapRef.current)
               mapRef.current.flyTo([store.latitude, store.longitude])
               onStoreMarkerClicked(store)
             })
-        })
       })
-    }
-  }, [userCoords, client, onStoreMarkerClicked])
+    })
+    // annoying warning disabled, cant figure out any other workaround
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  // return map container
   return (
     <div className={classes.map} id='map'/>
   )
@@ -115,31 +68,16 @@ function Map ({ client, userCoords, onStoreMarkerClicked }) {
 
 export default Map
 
-// query for stores
 const GET_STORES = gql`
-  query getStores($latitude: String!, $longitude: String!){
-    getStores(latitude: $latitude, longitude: $longitude){
+  query getStores{
+    getStores{
+      id
+      storeName
       latitude
       longitude
-      storeName
-      imageUrl
       addressOne
-      addressTwo
-      city
-      state
-      zipcode
-      moHours
-      tuHours
-      weHours
-      thHours
-      frHours
-      saHours
-      suHours
-      wifi
-      bakery
-      milkAlt
-      indoorSeating
-      driveThru
-      roastery
+      phoneNumber
+      email
+      imageUrl
     }
   }`
