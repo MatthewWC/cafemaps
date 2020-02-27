@@ -3,7 +3,7 @@ const { ForbiddenError, UnauthorizedError } = require('../errors')
 
 //TODO: on account delete, send email
 //TODO: email verify
-
+//TODO: limit update frequency, and create acc
 module.exports = {
   Query: {
     getUser: async (_, args, context, info) => {
@@ -73,7 +73,14 @@ module.exports = {
         let token
         let newPassword
         // handle auth
-        await context.auth('USER')
+        try{
+          await context.auth('USER')
+        }
+        catch(error){
+          if(error.name === 'ForbiddenError'){
+            await context.auth('ADMIN')
+          }
+        }
         // get user
         const user = context.req.user
         // hash new password
