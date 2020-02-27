@@ -1,15 +1,15 @@
-const companyResolvers = require('./company.js')
+const coffeeResolvers = require('./coffee.js')
 const storeResolvers = require('./store')
 const userResolvers = require('./user')
 
 module.exports = {
   Query: {
-    ...companyResolvers.Query,
+    ...coffeeResolvers.Query,
     ...storeResolvers.Query,
     ...userResolvers.Query
   },
   Mutation: {
-    ...companyResolvers.Mutation,
+    ...coffeeResolvers.Mutation,
     ...storeResolvers.Mutation,
     ...userResolvers.Mutation
   }
