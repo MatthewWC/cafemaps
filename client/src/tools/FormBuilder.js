@@ -9,19 +9,9 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import Snackbar from '@material-ui/core/SnackBar'
-import MuiAlert from '@material-ui/lab/Alert'
 // ---- M-UI imports ----
 
 import validator from './validator'
-
-function Alert(props) {
-  return( <MuiAlert 
-    elevation={6} 
-    variant="filled" 
-    {...props} />
-  )
-}
 
 // M-UI styles
 const useStyles = makeStyles(theme => ({
@@ -63,7 +53,6 @@ function FormBuilder({
 
   // M-UI styles instance
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false);
 
   //refs
   const formRef = React.useRef()
@@ -112,8 +101,7 @@ function FormBuilder({
         mutation: mutation,
         variables: variables
       })
-      // toast
-      setOpen(true)
+      
       if(formName === 'Login Form'){
         localStorage.setItem('token', results.data.login.token)
         localStorage.setItem('email', results.data.login.user.email)
@@ -140,14 +128,6 @@ function FormBuilder({
       let image = URL.createObjectURL(event.target.files[0])
       imageEle.current.src = image
     }
-  }
-
-  // toast logic
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
   }
 
   return(
@@ -235,11 +215,6 @@ function FormBuilder({
           </Button>
         </form>
       </Paper>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          Success!
-        </Alert>
-      </Snackbar>
     </Grid>
   )
 }
