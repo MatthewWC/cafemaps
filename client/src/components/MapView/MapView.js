@@ -1,7 +1,9 @@
 import React from 'react'
+import gql from 'graphql-tag'
 
 import Map from './Map'
 import SideBar from './SideBar/SideBar'
+import CoffeeBar from './CoffeeBar'
 import ReportButton from './ReportButton'
 //TODO: import user button
 
@@ -21,43 +23,45 @@ const useStyles = makeStyles(theme => ({
 function MapView (props) {
   // M-UI styles instance
   const classes = useStyles()
-  // init user cords
-  const [ userCoords, setUserCoords ] = React.useState(null)
+
   const [ storeInfo, setStoreInfo ] = React.useState(null)
+  const [ coffeeInfo, setCoffeeInfo ] = React.useState(null)
+  const [ visibility, setVisibility ] = React.useState(false)
 
   //store info function on marker click
-  function onStoreMarkerClicked(store){
+  async function onStoreMarkerClicked(store){
     setStoreInfo(store)
-  }
-
-  function handleGeolocate (){
-    // if geolocate fails
-    function onGeolocateError(error){
-      // create pop up to inform user we dont have permission to use their location 
-      //TODO: figure out why error only hits so often. is this endpoint timeout?
-    }
- 
-    function onGeolocateSuccess(coordinates) {
-      // user coordinates from successful return 
-      setUserCoords({lat: coordinates.coords.latitude, lng: coordinates.coords.longitude})
-      // chang state, pass cords to map component
-      
-    }
-
-    // geolocate call
-    navigator.geolocation.getCurrentPosition(onGeolocateSuccess, onGeolocateError)
+    const coffees = await props.client.query({
+      query: GET_COFFEES,
+      variables: {
+        storeId: store.id
+      }
+    })
+    setCoffeeInfo(coffees)
+    setVisibility(!visibility)
   }
 
   return (
     <div className={classes.mapViewRoot}>
-      <Map onStoreMarkerClicked={onStoreMarkerClicked} client={props.client} userCoords={userCoords}/>
-      <SideBar storeInfo={storeInfo} geolocationFunction={handleGeolocate}/>
+      <Map 
+        onStoreMarkerClicked={onStoreMarkerClicked} 
+        client={props.client}/>
+      { visibility ? <SideBar storeInfo={storeInfo}/> : null }
+      { visibility ? <CoffeeBar coffeeInfo={coffeeInfo}/> : null }
       <ReportButton/>
     </div>
   )
 }
 
-// render zoom comp
-// render user coords?
-
 export default MapView
+
+const GET_COFFEES = gql`
+  query getCoffees($storeId: String!){
+    getCoffees(storeId: $storeId){
+      id
+      storeId
+      coffeeName
+      imageUrl
+      description
+    }
+  }`
