@@ -41,8 +41,7 @@ this.router = new Router()
 authMiddleware(this.router)
 
 app.post('/upload', this.router.access.user, upload.single('file'), imageUpload)
-app.post('/createStore', this.router.access.admin, upload.single('file'), imageUpload)
-
+app.post('/uploadAdmin', this.router.access.admin, upload.single('file'), imageUpload)
 // start server on localhost, port 4000
 app.listen({ 
   host: 'localhost',
