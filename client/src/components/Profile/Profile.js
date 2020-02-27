@@ -38,7 +38,7 @@ function Profile (props) {
   const classes = useStyles()
   // graphql query hook
   const { loading, error, data } = useQuery(GET_USER, { variables: { email: localStorage.getItem('email') }})
-
+  
   if(loading) {
     return(
       <div className={classes.root}>
