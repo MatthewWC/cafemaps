@@ -44,9 +44,8 @@ app.post('/upload', this.router.access.user, upload.single('file'), imageUpload)
 app.post('/uploadAdmin', this.router.access.admin, upload.single('file'), imageUpload)
 // start server on localhost, port 4000
 app.listen({ 
-  host: 'localhost',
-  port: 4000 }, () => {
-  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+  port: 80 }, () => {
+  console.log(`Server ready at port ${80}`)
 })
 
 // const createAdmin = async () => {
