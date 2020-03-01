@@ -26,16 +26,13 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon server/index.js"
+    "start": "nodemon --inspect=0.0.0.0 index.js",
+    "start:prod": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MatthewWC/cafemaps.git"
   },
   "author": "Matthew Cook",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MatthewWC/cafemaps/issues"
-  },
-  "homepage": "https://github.com/MatthewWC/cafemaps#readme"
+  "license": "ISC"
 }

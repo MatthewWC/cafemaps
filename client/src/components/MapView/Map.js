@@ -29,12 +29,10 @@ function Map ({ client, onStoreMarkerClicked }) {
   
   useEffect(() => {
     async function initMap(){
-      const response = await fetch('http://ip-api.com/json')
-      const data = await response.json()
       
       mapRef.current = L.map('map', {
         // map starting spot
-        center: [data.lat, data.lon],
+        center: [10, 10],
         zoom: 12,
         zoomControl: false,
         layers: [

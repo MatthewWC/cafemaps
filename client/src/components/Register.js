@@ -8,6 +8,7 @@ import FormBuilder from '../tools/FormBuilder'
 function Register (props) {
   return(
     <Grid container justify='center'>
+      <h1>TEST</h1>
       <FormBuilder
         formName={'Register Form'}
         fields={{

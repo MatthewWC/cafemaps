@@ -7,12 +7,14 @@ const express = require('express')
 const authMiddleware = require('./middleware/auth-middleware')
 const cors = require('cors')
 const { imageUpload } = require('./config/imageUpload')
+const { serverStatus } = require('./config/serverStatus')
 const { Router } = require('express')
 const multer = require('multer')
 const upload = multer()
 // express instance
 const app = express()
 app.use(cors())
+const port = 8080
 
 // forms relations between data tables, ran in here to avoid ordering issues
 connection.sync()
@@ -42,11 +44,14 @@ authMiddleware(this.router)
 
 app.post('/upload', this.router.access.user, upload.single('file'), imageUpload)
 app.post('/uploadAdmin', this.router.access.admin, upload.single('file'), imageUpload)
+app.get('/health', serverStatus)
 // start server on localhost, port 4000
 app.listen({ 
-  port: 80 }, () => {
-  console.log(`Server ready at port ${80}`)
+  port: port
+}, () => {
+  console.log(`Shit server is live on port ${port}`)
 })
+
 
 // const createAdmin = async () => {
 //   const { hashPassword } = require('./middleware/util')

@@ -2,16 +2,29 @@ const Sequelize = require('sequelize')
 const { join } = require('path')
 const { readdirSync } = require('fs')
 
-const connection = new Sequelize('cafemaps', 'postgres', process.env.POSTGRES_PASS, {
-  host: 'localhost',
+const connection = new Sequelize(
+  process.env.POSTGRES_DATABASE,
+  process.env.POSTGRES_USERNAME,
+  process.env.POSTGRES_PASS,
+  {
+  host: process.env.POSTGRES_HOST,
+  port: process.env.POSTGRES_PORT,
   dialect: 'postgres',
-  logging: process.env.LOGLEVEL === 'debug' ? null : false,
+  dialectOptions: { 
+    ssl: {
+      require:true
+    } 
+  },
+  logging: true,
+  force: true,
   pool: {
-    max: 5,
+    max: 100,
     min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
+    idle: 200000,
+    acquire: 1000000,
+  },
+  ssl: true,
+  logging: process.env.LOGLEVEL === 'debug' ? null : false
 })
 
 const models = {}
