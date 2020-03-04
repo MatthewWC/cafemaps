@@ -1,9 +1,10 @@
-FROM node:10.16.0-alpine
+FROM node:10
 
 COPY package*.json ./
 RUN npm install
 
-COPY *.js ./
+COPY . .
+
+CMD [ "npm", "run", "start" ]
 
 EXPOSE 8080
-CMD [ "npm", "run", "start" ]

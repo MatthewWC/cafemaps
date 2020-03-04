@@ -7,6 +7,7 @@ const secure = secureMe()
 
 function accessBuilder(role) {
   return async (req, res, next) => {
+    
     // TODO: get ip address
 
     // if public resolver, skip auth

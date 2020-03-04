@@ -14,10 +14,19 @@ const upload = multer()
 // express instance
 const app = express()
 app.use(cors())
-const port = 8080
+const port = 4000
 
 // forms relations between data tables, ran in here to avoid ordering issues
-connection.sync()
+async function connectToDatabase(){
+  try {
+    await connection.authenticate();
+    connection.sync()
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+connectToDatabase()
 
 const server = new ApolloServer({ 
   typeDefs, 
@@ -43,20 +52,20 @@ this.router = new Router()
 authMiddleware(this.router)
 
 app.post('/upload', this.router.access.user, upload.single('file'), imageUpload)
-app.post('/uploadAdmin', this.router.access.admin, upload.single('file'), imageUpload)
 app.get('/health', serverStatus)
-// start server on localhost, port 4000
+
 app.listen({ 
+  host: 'localhost',
   port: port
 }, () => {
-  console.log(`Shit server is live on port ${port}`)
+  console.log(`server is live on port ${port}`)
 })
 
 
 // const createAdmin = async () => {
 //   const { hashPassword } = require('./middleware/util')
 //   let hash
-//   hash = await hashPassword('admin')
+//   hash = await hashPassword('ADMIN')
 //   models.User.create({
 //     role: 'ADMIN',
 //     email: 'noseelol.mc@gmail.com',

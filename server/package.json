@@ -1,13 +1,13 @@
 {
-  "name": "cafemaps",
+  "name": "coffeemaps",
   "version": "1.0.0",
-  "description": "cafemaps",
-  "main": "server/index.js",
+  "description": "coffeemaps server",
+  "main": "index.js",
   "dependencies": {
     "apollo-errors": "^1.9.0",
     "apollo-server-express": "^2.9.14",
     "aws-sdk": "^2.603.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^3.0.8",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "formidable": "^1.2.1",
@@ -26,13 +26,17 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon --inspect=0.0.0.0 index.js",
+    "start": "node index.js",
     "start:prod": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MatthewWC/cafemaps.git"
+    "url": "git+https://github.com/MatthewWC/coffeemaps.git"
   },
   "author": "Matthew Cook",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatthewWC/coffeemaps/issues"
+  },
+  "homepage": "https://github.com/MatthewWC/coffeemaps#readme"
 }

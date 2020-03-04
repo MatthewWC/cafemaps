@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize')
 const { join } = require('path')
 const { readdirSync } = require('fs')
+require('dotenv').config()
+const isProd = process.env.NODE_ENV === 'production'
 
 const connection = new Sequelize(
   process.env.POSTGRES_DATABASE,
@@ -9,21 +11,18 @@ const connection = new Sequelize(
   {
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT,
+  ssl: isProd,
   dialect: 'postgres',
-  dialectOptions: { 
-    ssl: {
-      require:true
-    } 
+  dialectOptions: {
+    ssl: isProd
   },
   logging: true,
-  force: true,
   pool: {
     max: 100,
     min: 0,
     idle: 200000,
     acquire: 1000000,
   },
-  ssl: true,
   logging: process.env.LOGLEVEL === 'debug' ? null : false
 })
 
