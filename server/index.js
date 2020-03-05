@@ -1,27 +1,32 @@
-require('dotenv').config()
 const { ApolloServer } = require('apollo-server-express')
-const resolvers = require('./resolvers')
-const typeDefs = require('./config/typeDefs')
-const { models, connection } = require('./config/sequelize')
-const express = require('express')
-const authMiddleware = require('./middleware/auth-middleware')
-const cors = require('cors')
-const { imageUpload } = require('./config/imageUpload')
-const { serverStatus } = require('./config/serverStatus')
 const { Router } = require('express')
+const express = require('express')
 const multer = require('multer')
+const cors = require('cors')
+
+const { models, connection } = require('./config/sequelize')
+const { serverStatus } = require('./config/serverStatus')
+const { imageUpload } = require('./config/imageUpload')
+const typeDefs = require('./config/typeDefs')
+const resolvers = require('./resolvers')
+
+const authMiddleware = require('./middleware/auth-middleware')
+
 const upload = multer()
-// express instance
 const app = express()
 app.use(cors())
-const port = 4000
 
-// forms relations between data tables, ran in here to avoid ordering issues
+require('dotenv').config()
+
+const isProd = process.env.NODE_ENV === 'production'
+const port = isProd ? 8080 : 4000
+
+// establish valid connection, sync tables correctly
 async function connectToDatabase(){
   try {
     await connection.authenticate();
     connection.sync()
-    console.log('Connection has been established successfully.');
+    console.log('Connection to database has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
@@ -58,7 +63,7 @@ app.listen({
   host: 'localhost',
   port: port
 }, () => {
-  console.log(`server is live on port ${port}`)
+  console.log(`Server is live on port ${port}.`)
 })
 
 
