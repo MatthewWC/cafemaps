@@ -31,12 +31,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MatthewWC/coffeemaps.git"
+    "url": "git+https://github.com/MatthewWC/coffeemaps_server.git"
   },
   "author": "Matthew Cook",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MatthewWC/coffeemaps/issues"
+    "url": "https://github.com/MatthewWC/coffeemaps_server/issues"
   },
-  "homepage": "https://github.com/MatthewWC/coffeemaps#readme"
+  "homepage": "https://github.com/MatthewWC/coffeemaps_server#readme"
 }
