@@ -1,6 +1,5 @@
 // https://pontaku-tools.com/english/ great tool for sequelize
 
-const { UnknownError } = require('../errors')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
