@@ -1,4 +1,4 @@
-const { hashPassword, comparePassword, createBearerToken, verifyBearerToken } = require('../middleware/util')
+const { hashPassword, comparePassword, createBearerToken } = require('../middleware/util')
 const { ForbiddenError, UnauthorizedError } = require('../errors')
 
 //TODO: on account delete, send email
