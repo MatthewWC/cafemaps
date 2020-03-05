@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
-const { join } = require('path')
 const { readdirSync } = require('fs')
+const { join } = require('path')
+
 require('dotenv').config()
 const isProd = process.env.NODE_ENV === 'production'
 
