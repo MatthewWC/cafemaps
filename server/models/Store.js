@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: () => uuid()
     },
     storeName: {
+      unique: true,
       type: DataTypes.STRING
     },
     latitude: {
