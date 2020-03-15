@@ -56,11 +56,11 @@ server.applyMiddleware({ app })
 this.router = new Router()
 authMiddleware(this.router)
 
-app.post('/upload', this.router.access.user, upload.single('file'), imageUpload)
+// user auth needs fixed, can either do admin or user, but need both
+app.post('/upload', this.router.access.admin, upload.single('file'), imageUpload)
 app.get('/health', serverStatus)
 
-app.listen({ 
-  host: 'localhost',
+app.listen({
   port: port
 }, () => {
   console.log(`Server is live on port ${port}.`)
